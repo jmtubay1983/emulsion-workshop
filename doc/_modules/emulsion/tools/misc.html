@@ -1,21 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>emulsion.tools.misc &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../../../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -46,11 +43,10 @@
 <span class="c1"># [HEADER]</span>
 
 
-<span class="kn">from</span>   <span class="nn">functools</span>                 <span class="k">import</span> <span class="n">partial</span>
-<span class="kn">from</span>   <span class="nn">importlib</span>                 <span class="k">import</span> <span class="n">import_module</span>
-<span class="kn">from</span>   <span class="nn">typing</span>                    <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
-<span class="kn">from</span>   <span class="nn">collections</span>               <span class="k">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span>   <span class="nn">operator</span>                  <span class="k">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span>   <span class="nn">importlib</span>                 <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span>   <span class="nn">typing</span>                    <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span>   <span class="nn">collections</span>               <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span>   <span class="nn">operator</span>                  <span class="kn">import</span> <span class="n">itemgetter</span>
 <span class="kn">import</span> <span class="nn">itertools</span>                 <span class="k">as</span> <span class="nn">it</span>
 
 <span class="kn">import</span> <span class="nn">csv</span>
@@ -58,10 +54,9 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span>                     <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span>   <span class="nn">sortedcontainers</span>          <span class="k">import</span> <span class="n">SortedSet</span>
-<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span> <span class="k">import</span> <span class="n">SemanticException</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.getters</span>    <span class="k">import</span> <span class="n">create_duration_getter</span><span class="p">,</span> <span class="n">create_state_tester</span><span class="p">,</span> <span class="n">create_relative_population_getter</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>      <span class="k">import</span> <span class="n">debuginfo</span>
+<span class="kn">from</span>   <span class="nn">sortedcontainers</span>          <span class="kn">import</span> <span class="n">SortedSet</span>
+<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span> <span class="kn">import</span> <span class="n">SemanticException</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.getters</span>    <span class="kn">import</span> <span class="n">create_duration_getter</span><span class="p">,</span> <span class="n">create_state_tester</span><span class="p">,</span> <span class="n">create_relative_population_getter</span>
 
 <span class="n">AGENTS</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="sd">&quot;&quot;&quot;Constant value for the index where list of agents are stored in</span>
@@ -356,7 +351,7 @@
 <span class="sd">        produce dictionaries.)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fil</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;replace&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fil</span><span class="p">:</span>
         <span class="n">description</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">fil</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">description</span></div>
 
@@ -436,27 +431,37 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">setattr</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="nb">property</span><span class="p">(</span><span class="n">getter_function</span><span class="p">))</span>
     <span class="n">agent</span><span class="o">.</span><span class="n">_mbr_cache</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span></div>
+    <span class="c1"># debuginfo(agent, agent._mbr_cache)</span>
+
     <span class="c1"># debuginfo(&#39;Agent {} adding property {} to class {}&#39;.format(agent, property_name, agent.__class__))</span>
 
 
+
+<span class="c1">## EXPERIMENTAL - replaced by callable class in the model - should not be used anymore in the rest of the code</span>
 <div class="viewcode-block" id="add_all_test_properties"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.misc.add_all_test_properties">[docs]</a><span class="k">def</span> <span class="nf">add_all_test_properties</span><span class="p">(</span><span class="n">agent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Endow the agent with individuals properties: ``duration_in_&lt;a state</span>
 <span class="sd">    machine&gt;`` for all state machines, and ``is_X`` for all states.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">l_machines</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">statemachines_by_level</span><span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">level</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">l_machines</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">agent</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_sublevels</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">upper_level</span><span class="p">()</span><span class="o">.</span><span class="n">level</span><span class="p">):</span>
-            <span class="n">l_machines</span> <span class="o">+=</span> <span class="n">agent</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">statemachines_by_level</span><span class="p">[</span><span class="n">level</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">machine_name</span> <span class="ow">in</span> <span class="n">l_machines</span><span class="p">:</span>
-        <span class="n">add_new_property</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="s1">&#39;duration_in_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">),</span>
-                         <span class="n">create_duration_getter</span><span class="p">(</span><span class="n">machine_name</span><span class="p">))</span>
-        <span class="n">machine</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_machines</span><span class="p">[</span><span class="n">machine_name</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">machine</span><span class="o">.</span><span class="n">states</span><span class="p">:</span>
-            <span class="n">add_new_property</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="s1">&#39;is_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
-                             <span class="n">create_state_tester</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+    <span class="k">pass</span></div>
+    <span class="c1"># determine the list of state machines associated with the level of the agent</span>
+    <span class="c1"># if agent.level is not None:</span>
+    <span class="c1">#     # if the agent directly represents a model level, the state machines are known by the model</span>
+    <span class="c1">#     l_machines = agent.model.statemachines_by_level[agent.level]</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#     # otherwise, the agent represents a group, hence can be associated with state machines from the underlying level (sublevel of the agent&#39;s upper level)</span>
+    <span class="c1">#     l_machines = []</span>
+    <span class="c1">#     for level in agent.model.get_sublevels(agent.upper_level().level):</span>
+    <span class="c1">#         l_machines += agent.model.statemachines_by_level[level]</span>
+    <span class="c1">#</span>
+    <span class="c1"># # associate</span>
+    <span class="c1"># for machine_name in l_machines:</span>
+    <span class="c1">#     add_new_property(agent, &#39;duration_in_{}&#39;.format(machine_name),</span>
+    <span class="c1">#                      create_duration_getter(machine_name))</span>
+    <span class="c1">#     machine = agent.model.state_machines[machine_name]</span>
+    <span class="c1">#     for state in machine.states:</span>
+    <span class="c1">#         add_new_property(agent, &#39;is_{}&#39;.format(state.name),</span>
+    <span class="c1">#                          create_state_tester(state.name))</span>
 
 <div class="viewcode-block" id="add_all_relative_population_getters"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.misc.add_all_relative_population_getters">[docs]</a><span class="k">def</span> <span class="nf">add_all_relative_population_getters</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">t_key_variables</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Endow the agent with individual properties of the form ``total_X_Y``</span>
@@ -498,17 +503,6 @@
         <span class="c1"># debuginfo(&#39;Adding property for&#39;, t_combination)</span>
         <span class="n">add_new_property</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span>
                          <span class="n">create_relative_population_getter</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">t_combination</span><span class="p">))</span></div>
-
-
-<div class="viewcode-block" id="serial"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.misc.serial">[docs]</a><span class="k">def</span> <span class="nf">serial</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A very simple serial number generator.&quot;&quot;&quot;</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="n">start</span>
-    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="k">yield</span> <span class="n">value</span>
-        <span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">end</span><span class="p">):</span>
-                <span class="n">value</span> <span class="o">=</span> <span class="n">start</span></div>
 
 
 <div class="viewcode-block" id="read_csv_prototypes"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.misc.read_csv_prototypes">[docs]</a><span class="k">def</span> <span class="nf">read_csv_prototypes</span><span class="p">(</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">weight_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">include</span><span class="o">=</span><span class="p">[],</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[]):</span>
@@ -651,17 +645,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -678,7 +670,7 @@
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

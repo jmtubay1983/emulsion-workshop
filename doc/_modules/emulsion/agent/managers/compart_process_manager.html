@@ -1,21 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>emulsion.agent.managers.compart_process_manager &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../../../../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -46,19 +43,19 @@
 <span class="c1"># [HEADER]</span>
 
 <span class="kn">import</span> <span class="nn">itertools</span>                 <span class="k">as</span> <span class="nn">it</span>
-<span class="kn">from</span>   <span class="nn">collections</span>               <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span>   <span class="nn">collections</span>               <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>                     <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span>                    <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="kn">from</span>   <span class="nn">emulsion.agent.comparts</span>   <span class="k">import</span> <span class="n">Compartment</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.comparts</span>   <span class="kn">import</span> <span class="n">Compartment</span>
 
-<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.group_manager</span>  <span class="k">import</span>  <span class="n">GroupManager</span>
-<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.abstract_process_manager</span>  <span class="k">import</span>  <span class="n">AbstractProcessManager</span>
-<span class="kn">from</span>   <span class="nn">emulsion.agent.exceptions</span> <span class="k">import</span> <span class="n">StateVarNotFoundException</span>
-<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span> <span class="k">import</span> <span class="n">SemanticException</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>       <span class="k">import</span> <span class="n">load_class</span><span class="p">,</span> <span class="n">complement_key</span><span class="p">,</span> <span class="n">add_all_relative_population_getters</span><span class="p">,</span> <span class="n">add_all_test_properties</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>      <span class="k">import</span> <span class="n">debuginfo</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.group_manager</span>  <span class="kn">import</span>  <span class="n">GroupManager</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.abstract_process_manager</span>  <span class="kn">import</span>  <span class="n">AbstractProcessManager</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.exceptions</span> <span class="kn">import</span> <span class="n">StateVarNotFoundException</span>
+<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span> <span class="kn">import</span> <span class="n">SemanticException</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>       <span class="kn">import</span> <span class="n">load_class</span><span class="p">,</span> <span class="n">complement_key</span><span class="p">,</span> <span class="n">add_all_relative_population_getters</span><span class="p">,</span> <span class="n">add_all_test_properties</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>      <span class="kn">import</span> <span class="n">debuginfo</span>
 
 <span class="c1">#   _____                                 _   _____</span>
 <span class="c1">#  / ____|                               | | |  __ \</span>
@@ -149,12 +146,32 @@
                 <span class="n">add_all_relative_population_getters</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;MASTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_content</span><span class="p">[</span><span class="n">init_key</span><span class="p">],</span> <span class="n">d_grouping_desc</span><span class="p">[</span><span class="s1">&#39;key_variables&#39;</span><span class="p">])</span>
 
         <span class="k">for</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="n">t_key_variables_MASTER</span><span class="p">:</span>
-            <span class="n">add_all_relative_population_getters</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;MASTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_content</span><span class="p">[</span><span class="n">init_key</span><span class="p">],</span> <span class="p">(</span><span class="n">variable_name</span><span class="p">,))</span>
+            <span class="n">add_all_relative_population_getters</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;MASTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_content</span><span class="p">[</span><span class="n">init_key</span><span class="p">],</span> <span class="p">(</span><span class="n">variable_name</span><span class="p">,))</span></div>
 
-        <span class="c1">## ADD is_X and duration_in_machine properties for state</span>
-        <span class="c1">## machines used as StateMachineProcesses for the current</span>
-        <span class="c1">## population</span>
-        <span class="n">add_all_test_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="c1">## EXPERIMENTAL - replaced by callable class in the model</span>
+        <span class="c1"># ## ADD is_X and duration_in_machine properties for state</span>
+        <span class="c1"># ## machines used as StateMachineProcesses for the current</span>
+        <span class="c1"># ## population</span>
+        <span class="c1"># add_all_test_properties(self)</span>
+
+<div class="viewcode-block" id="CompartProcessManager.evolve"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.compart_process_manager.CompartProcessManager.evolve">[docs]</a>    <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">others</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make the ProcessManager evolve, i.e. all the registered processes</span>
+<span class="sd">        in order, starting with the evolution of the sublevels, and</span>
+<span class="sd">        followed by the evolution inherited from superclasses.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># self[&#39;MASTER&#39;].evolve()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">_is_active</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">process</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+                <span class="n">process</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">process</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_compart</span><span class="p">:</span>
+                    <span class="c1"># debuginfo(&#39;&gt;&#39;*20)</span>
+                    <span class="c1"># debuginfo(process, process.new_population)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_new_population</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">new_population</span><span class="p">)</span>
+                    <span class="n">process</span><span class="o">.</span><span class="n">update_counts</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="o">**</span><span class="n">others</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="CompartProcessManager.add_compart_process"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.compart_process_manager.CompartProcessManager.add_compart_process">[docs]</a>    <span class="k">def</span> <span class="nf">add_compart_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                             <span class="n">process_name</span><span class="p">,</span>
@@ -234,7 +251,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">add_population</span><span class="p">(</span><span class="n">to_add</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">proc</span><span class="p">,</span> <span class="n">group_manager</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">proc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_compart</span><span class="p">:</span>
-                    <span class="n">group_manager</span><span class="o">.</span><span class="n">do_enter_actions_on_init</span><span class="p">()</span>
+                    <span class="c1"># group_manager.do_enter_actions_on_init()</span>
                     <span class="n">group_manager</span><span class="o">.</span><span class="n">update_counts</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="CompartProcessManager.add_new_population"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.compart_process_manager.CompartProcessManager.add_new_population">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_population</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">population</span><span class="p">):</span>
@@ -315,16 +332,14 @@
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">qty</span> <span class="ow">in</span> <span class="n">d_real_population_spec</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">group_manager</span><span class="o">.</span><span class="n">_content</span><span class="p">:</span>
                 <span class="n">d_statevars</span> <span class="o">=</span> <span class="p">{</span><span class="n">state</span><span class="o">.</span><span class="n">state_machine</span><span class="o">.</span><span class="n">machine_name</span><span class="p">:</span> <span class="n">state</span> <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">key</span><span class="p">}</span>
-                <span class="n">new_comp</span> <span class="o">=</span> <span class="n">group_manager</span><span class="p">[</span><span class="n">default_key</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">population</span><span class="o">=</span><span class="n">qty</span><span class="p">,</span> <span class="o">**</span><span class="n">d_statevars</span><span class="p">)</span>
+                <span class="n">new_comp</span> <span class="o">=</span> <span class="n">group_manager</span><span class="p">[</span><span class="n">default_key</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">population</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">d_statevars</span><span class="p">)</span>
                 <span class="n">new_comp</span><span class="o">.</span><span class="n">keys</span> <span class="o">=</span> <span class="n">key</span>
                 <span class="n">group_manager</span><span class="o">.</span><span class="n">_content</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_comp</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># debuginfo(&quot;&gt;&quot;*5, group_manager[key], key, qty)</span>
-                <span class="n">group_manager</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">qty</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
-                    <span class="c1"># debuginfo(&#39;DOING ACTIONS ON ENTER FOR&#39;, group_manager[key], state.name, state.name)</span>
-                    <span class="n">group_manager</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">do_state_actions</span><span class="p">(</span><span class="s1">&#39;on_enter&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">state_machine</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">population</span><span class="o">=</span><span class="n">qty</span><span class="p">)</span>
-                    <span class="c1"># debuginfo(&#39;=&gt;&#39;, group_manager[key].times_to_exit)</span>
+            <span class="c1"># else:</span>
+            <span class="c1"># debuginfo(&quot;&gt;&quot;*5, group_manager[key], key, qty)</span>
+            <span class="n">group_manager</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">qty</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+                <span class="n">group_manager</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">do_state_actions</span><span class="p">(</span><span class="s1">&#39;on_enter&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">state_machine</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">population</span><span class="o">=</span><span class="n">qty</span><span class="p">)</span>
             <span class="n">nb_added</span> <span class="o">+=</span> <span class="n">qty</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">population</span> <span class="o">+=</span> <span class="n">nb_added</span>
 
@@ -523,17 +538,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -550,7 +563,7 @@
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

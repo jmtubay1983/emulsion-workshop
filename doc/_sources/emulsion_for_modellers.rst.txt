@@ -13,13 +13,25 @@ Functions Available for Models
 
 .. autofunction:: emulsion.tools.functions.DIV
 
+.. autofunction:: emulsion.tools.functions.Eq
+
+.. autofunction:: emulsion.tools.functions.GreaterThan
+
 .. autofunction:: emulsion.tools.functions.IfThenElse
+
+.. autofunction:: emulsion.tools.functions.LessThan
 
 .. autofunction:: emulsion.tools.functions.MAX
 
 .. autofunction:: emulsion.tools.functions.MIN
 
 .. autofunction:: emulsion.tools.functions.OR
+
+.. autofunction:: emulsion.tools.functions.ROUND
+
+.. autofunction:: emulsion.tools.functions.StrictGreaterThan
+
+.. autofunction:: emulsion.tools.functions.StrictLessThan
 
 .. autofunction:: emulsion.tools.functions.random_beta
 

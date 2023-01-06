@@ -16,7 +16,7 @@ System
     the documentation of your shell to adapt the commands below.
 
 Language
-    EMULSION is written in **Python 3** (version 3.6 or higher). In what
+    EMULSION is written in **Python 3** (version 3.9 or higher). In what
     follows, we assume that ``python3`` and ``pip3`` refer to your
     Python3 installation. If not, replace them by your own
     configuration in the commands below (e.g. with Windows:

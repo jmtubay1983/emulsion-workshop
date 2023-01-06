@@ -1,21 +1,19 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>Model 5 (M4 + scale change) &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,16 +33,16 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="model-5-m4-scale-change">
-<h1>Model 5 (M4 + scale change)<a class="headerlink" href="#model-5-m4-scale-change" title="Permalink to this headline">¶</a></h1>
+  <section id="model-5-m4-scale-change">
+<h1>Model 5 (M4 + scale change)<a class="headerlink" href="#model-5-m4-scale-change" title="Permalink to this heading">¶</a></h1>
 <p>The scale change by itself is rather straight:</p>
 <ul class="simple">
-<li>the metapopulation is just another level with a specific aggregation
-type</li>
-<li>initialization relies on prototypes as previously, there are new
-prototypes for populations</li>
-<li>some parameters (e.g. initial prevalence) become variables attached
-to populations</li>
+<li><p>the metapopulation is just another level with a specific aggregation
+type</p></li>
+<li><p>initialization relies on prototypes as previously, there are new
+prototypes for populations</p></li>
+<li><p>some parameters (e.g. initial prevalence) become variables attached
+to populations</p></li>
 </ul>
 <p>The main changes here are the use of Python add-ons to specify processes
 which are not yet provided by generic features in EMULSION: here,
@@ -350,11 +348,11 @@ this level.</p>
 
 <span class="kn">import</span> <span class="nn">numpy</span>                 <span class="k">as</span>     <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="k">import</span> <span class="n">MetapopProcessManager</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="k">import</span> <span class="n">AutoStructuredView</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="k">import</span> <span class="n">MultiProcessManager</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="k">import</span> <span class="n">SimpleView</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.atoms</span> <span class="k">import</span> <span class="n">AtomAgent</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="kn">import</span> <span class="n">MetapopProcessManager</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="kn">import</span> <span class="n">AutoStructuredView</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="kn">import</span> <span class="n">MultiProcessManager</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="kn">import</span> <span class="n">SimpleView</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.atoms</span> <span class="kn">import</span> <span class="n">AtomAgent</span>
 
 
 <span class="c1">#===============================================================</span>
@@ -449,7 +447,7 @@ this level.</p>
 </div>
 <p>Which produces <a class="reference external" href="../_static/benchmark/model5-outputs.html">the following outputs</a></p>
 <p>State machine diagrams are the same as in Model 4.</p>
-</div>
+</section>
 
 
           </div>
@@ -492,17 +490,15 @@ this level.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -519,7 +515,7 @@ this level.</p>
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

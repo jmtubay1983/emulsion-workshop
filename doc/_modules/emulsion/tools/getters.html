@@ -1,21 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>emulsion.tools.getters &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../../../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -46,17 +43,18 @@
 <span class="c1"># [HEADER]</span>
 
 
-<span class="kn">from</span>   <span class="nn">importlib</span>                 <span class="k">import</span> <span class="n">import_module</span>
-<span class="kn">from</span>   <span class="nn">typing</span>                    <span class="k">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
-<span class="kn">from</span>   <span class="nn">collections</span>               <span class="k">import</span> <span class="n">Counter</span>
+<span class="kn">from</span>   <span class="nn">typing</span>                    <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span>   <span class="nn">collections</span>               <span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">from</span>   <span class="nn">functools</span>                 <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">import</span> <span class="nn">itertools</span>                 <span class="k">as</span> <span class="nn">it</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>                     <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">emulsion.tools.functions</span>  <span class="k">as</span> <span class="nn">em_func</span>
+<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span> <span class="kn">import</span> <span class="n">SemanticException</span>
 
 <div class="viewcode-block" id="create_population_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_population_getter">[docs]</a><span class="k">class</span> <span class="nc">create_population_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="create_population_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_population_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grouping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">t_states</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">]):</span>
+<div class="viewcode-block" id="create_population_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_population_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grouping_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">t_states</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;Build a callable class used as a getter for property of the form</span>
 <span class="sd">        ``total_X_Y`` where ``X`` and ``Y`` are states of two</span>
 <span class="sd">        different states machines used in the grouping *grouping_name*.</span>
@@ -85,11 +83,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">grouping_name</span> <span class="o">=</span> <span class="n">grouping_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t_states</span> <span class="o">=</span> <span class="n">t_states</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_group_population</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grouping_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_states</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="create_relative_population_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_relative_population_getter">[docs]</a><span class="k">class</span> <span class="nc">create_relative_population_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="create_relative_population_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_relative_population_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">t_variables</span><span class="p">):</span>
+<div class="viewcode-block" id="create_relative_population_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_relative_population_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">t_variables</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build a callable class used as a getter for property of the form</span>
 <span class="sd">        ``total_X_Y`` where ``X`` and ``Y`` are either states of two</span>
 <span class="sd">        different states machines used in the grouping described by *t_variables*,</span>
@@ -124,7 +122,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t_variables</span> <span class="o">=</span> <span class="n">t_variables</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="c1"># build list of total_X_Y where X, Y are only real states</span>
         <span class="n">l_real_states</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_variables</span><span class="p">:</span>
@@ -149,11 +147,12 @@
         <span class="n">l_totals</span> <span class="o">=</span> <span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="s1">&#39;total_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">t_group</span><span class="p">)))</span>
                     <span class="k">for</span> <span class="n">t_group</span> <span class="ow">in</span> <span class="n">l_combinations</span><span class="p">]</span>
         <span class="c1"># return the sum of values</span>
+
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">l_totals</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="create_counter_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_counter_getter">[docs]</a><span class="k">class</span> <span class="nc">create_counter_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="create_counter_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_counter_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grouping_name</span><span class="p">,</span> <span class="n">t_states</span><span class="p">):</span>
+<div class="viewcode-block" id="create_counter_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_counter_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grouping_name</span><span class="p">,</span> <span class="n">t_states</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build a callable class used as a getter for property of the form</span>
 <span class="sd">        ``total_X_Y`` where ``X`` and ``Y`` are state names in the</span>
 <span class="sd">        tuple *t_states* and where the total number of individuals in</span>
@@ -180,12 +179,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">grouping_name</span> <span class="o">=</span> <span class="n">grouping_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t_states</span> <span class="o">=</span> <span class="n">t_states</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t_states</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="n">t_states</span><span class="p">,)</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_group_population</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grouping_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t_states</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="create_state_tester"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_state_tester">[docs]</a><span class="k">class</span> <span class="nc">create_state_tester</span><span class="p">:</span>
-<div class="viewcode-block" id="create_state_tester.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_state_tester.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_name</span><span class="p">):</span>
+<div class="viewcode-block" id="create_state_tester.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_state_tester.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build a callable class used as a getter for property of the form</span>
 <span class="sd">        ``is_X`` where ``X`` is a state of a state machine.</span>
 
@@ -204,11 +203,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state_name</span> <span class="o">=</span> <span class="n">state_name</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">is_in_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="create_duration_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_duration_getter">[docs]</a><span class="k">class</span> <span class="nc">create_duration_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="create_duration_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_duration_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">):</span>
+<div class="viewcode-block" id="create_duration_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_duration_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build a callable class used as a getter for property of the form</span>
 <span class="sd">        ``duration_in_M`` where ``M`` is a *machine_name*.</span>
 
@@ -228,11 +227,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">machine_name</span> <span class="o">=</span> <span class="n">machine_name</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">duration_in_current_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_name</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="find_operator"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.find_operator">[docs]</a><span class="k">class</span> <span class="nc">find_operator</span><span class="p">:</span>
-<div class="viewcode-block" id="find_operator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.find_operator.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="find_operator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.find_operator.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return an aggregation function named *operator*.</span>
 
 <span class="sd">        Search starts with emulsion functions (module</span>
@@ -270,17 +269,22 @@
             <span class="c1"># special case of &#39;percentileXX&#39; where XX is a number (0 to</span>
             <span class="c1"># 100) and automatically extracted</span>
             <span class="n">op</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">,</span> <span class="n">q</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">operator</span><span class="p">[</span><span class="mi">10</span><span class="p">:]))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># otherwise search in numpy</span>
+        <span class="c1"># otherwise search in numpy</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">operator</span><span class="p">):</span>
             <span class="n">op</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="p">,</span> <span class="n">operator</span><span class="p">):</span>
+            <span class="c1"># and finally in numpy.random (e.g. for choice)</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="p">,</span> <span class="n">operator</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;No module found to calculate aggregate variable with operator &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">operator</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">op</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="create_aggregator"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_aggregator">[docs]</a><span class="k">class</span> <span class="nc">create_aggregator</span><span class="p">:</span>
-<div class="viewcode-block" id="create_aggregator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_aggregator.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcevar</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="create_aggregator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_aggregator.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcevar</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create an aggregator function to be used as property getter. This</span>
 <span class="sd">        aggregator function has to collect all values of *sourcevar*</span>
 <span class="sd">        for agents contained in a given host, and reduce them to one</span>
@@ -305,13 +309,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">find_operator</span><span class="p">(</span><span class="n">operator</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sourcevar</span> <span class="o">=</span> <span class="n">sourcevar</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">([</span><span class="n">sublevel</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcevar</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">sublevel</span> <span class="ow">in</span> <span class="n">agent</span><span class="p">[</span><span class="s1">&#39;MASTER&#39;</span><span class="p">]])</span></div>
 
 
 <div class="viewcode-block" id="create_group_aggregator"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_group_aggregator">[docs]</a><span class="k">class</span> <span class="nc">create_group_aggregator</span><span class="p">:</span>
-<div class="viewcode-block" id="create_group_aggregator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_group_aggregator.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcevar</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">process_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<div class="viewcode-block" id="create_group_aggregator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_group_aggregator.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcevar</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">process_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                  <span class="n">group_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot;Build a getter for property of the form ``newvar_X_Y`` where ``X``</span>
 <span class="sd">        and ``Y`` are states of two different states machines used in</span>
@@ -350,7 +354,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sourcevar</span> <span class="o">=</span> <span class="n">sourcevar</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">process_name</span> <span class="o">=</span> <span class="n">process_name</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">([</span><span class="n">sublevel</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcevar</span><span class="p">)</span>
                        <span class="k">for</span> <span class="n">sublevel</span> <span class="ow">in</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_group_atoms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">process_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_name</span><span class="p">)])</span>
@@ -359,7 +363,7 @@
 
 
 <div class="viewcode-block" id="create_atoms_aggregator"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_atoms_aggregator">[docs]</a><span class="k">class</span> <span class="nc">create_atoms_aggregator</span><span class="p">:</span>
-<div class="viewcode-block" id="create_atoms_aggregator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_atoms_aggregator.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcevar</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="create_atoms_aggregator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_atoms_aggregator.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sourcevar</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build a getter for property of the form ``newvar_X`` where ``X`` if</span>
 <span class="sd">        the value of *state_name* (a state of *state_machine*),</span>
 <span class="sd">        ``newvar`` is an aggregate variable based on collecting all</span>
@@ -393,7 +397,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">machine_name</span> <span class="o">=</span> <span class="n">machine_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state_name</span> <span class="o">=</span> <span class="n">state_name</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span><span class="p">([</span><span class="n">sublevel</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sourcevar</span><span class="p">)</span>
                             <span class="k">for</span> <span class="n">sublevel</span> <span class="ow">in</span> <span class="n">agent</span><span class="o">.</span><span class="n">select_atoms</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_name</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state_name</span><span class="p">)])</span>
@@ -401,20 +405,31 @@
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
 
 
+<div class="viewcode-block" id="serial"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.serial">[docs]</a><span class="k">def</span> <span class="nf">serial</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A very simple serial number generator.&quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">start</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">value</span>
+        <span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">end</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">start</span></div>
+
+
 <div class="viewcode-block" id="create_new_serial"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_new_serial">[docs]</a><span class="k">class</span> <span class="nc">create_new_serial</span><span class="p">:</span>
-<div class="viewcode-block" id="create_new_serial.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_new_serial.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="create_new_serial.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_new_serial.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create the serial number generator associated to the specified</span>
 <span class="sd">        variable.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">generator</span> <span class="o">=</span> <span class="n">serial</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">generator</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="create_successor_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_successor_getter">[docs]</a><span class="k">class</span> <span class="nc">create_successor_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="create_successor_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_successor_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">):</span>
+<div class="viewcode-block" id="create_successor_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_successor_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a callable class to access the successor state for the</span>
 <span class="sd">        specified *machine_name*.</span>
 
@@ -434,7 +449,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">machine_name</span> <span class="o">=</span> <span class="n">machine_name</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the successor state for the state stored in</span>
 <span class="sd">        *machine_name*. If no value is set, return a random state.</span>
 
@@ -446,7 +461,7 @@
             <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_machines</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">machine_name</span><span class="p">]</span><span class="o">.</span><span class="n">get_random_state</span><span class="p">(</span><span class="n">qty</span><span class="o">=</span><span class="n">qty</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="create_predecessor_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_predecessor_getter">[docs]</a><span class="k">class</span> <span class="nc">create_predecessor_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="create_predecessor_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_predecessor_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">):</span>
+<div class="viewcode-block" id="create_predecessor_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_predecessor_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a function to access the predecessor state for the specified</span>
 <span class="sd">        *machine_name*.</span>
 
@@ -466,7 +481,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">machine_name</span> <span class="o">=</span> <span class="n">machine_name</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the predecessor state for the state stored in statevar</span>
 <span class="sd">        *machine_name*. If no value is set, return a random state.</span>
 
@@ -479,7 +494,7 @@
 
 
 <div class="viewcode-block" id="create_weighted_random"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_weighted_random">[docs]</a><span class="k">class</span> <span class="nc">create_weighted_random</span><span class="p">:</span>
-<div class="viewcode-block" id="create_weighted_random.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_weighted_random.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="create_weighted_random.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_weighted_random.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">,</span> <span class="n">weights</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a random choice function which returns a random state from</span>
 <span class="sd">        the given state machine (among non-autoremove states), according</span>
 <span class="sd">        to the weights. Weights are interpreted either directly as</span>
@@ -512,7 +527,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span>
         <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">agent</span><span class="o">.</span><span class="n">get_model_value</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span> <span class="k">for</span> <span class="n">weight</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">]</span>
         <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">):</span>
@@ -527,7 +542,7 @@
 
 
 <div class="viewcode-block" id="make_random_prototype_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_random_prototype_getter">[docs]</a><span class="k">class</span> <span class="nc">make_random_prototype_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="make_random_prototype_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_random_prototype_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">freqs</span><span class="p">):</span>
+<div class="viewcode-block" id="make_random_prototype_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_random_prototype_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">freqs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a function to access to random prototypes based on given</span>
 <span class="sd">        frequencies.</span>
 
@@ -547,13 +562,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span> <span class="o">=</span> <span class="n">freqs</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simu_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simu_id</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="PrototypeGenerator"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.PrototypeGenerator">[docs]</a><span class="k">class</span> <span class="nc">PrototypeGenerator</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Class designed to give prototypes on demand in a collection.&quot;&quot;&quot;</span>
-<div class="viewcode-block" id="PrototypeGenerator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.PrototypeGenerator.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="PrototypeGenerator.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.PrototypeGenerator.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span> <span class="o">=</span> <span class="n">freqs</span>
@@ -572,7 +587,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">freqs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">freqs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">):</span>
             <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -582,7 +597,7 @@
 
 
 <div class="viewcode-block" id="make_generator_prototype_getter"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_generator_prototype_getter">[docs]</a><span class="k">class</span> <span class="nc">make_generator_prototype_getter</span><span class="p">:</span>
-<div class="viewcode-block" id="make_generator_prototype_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_generator_prototype_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="make_generator_prototype_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_generator_prototype_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cycle</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return a function to access to prototypes in order, based on given</span>
 <span class="sd">        *names*.</span>
 
@@ -610,7 +625,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gen</span> <span class="o">=</span> <span class="n">PrototypeGenerator</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">freqs</span><span class="p">,</span> <span class="n">collection_name</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">cycle</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">it</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simu_id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">simu_id</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="o">.</span><span class="n">set_simu_id</span><span class="p">(</span><span class="n">simu_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">it</span><span class="p">)</span></div>
 
@@ -630,11 +645,130 @@
 <span class="sd">        a callable which can be called on an agent</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="make_information_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_information_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_vame</span><span class="p">):</span>
+<div class="viewcode-block" id="make_information_getter.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.make_information_getter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_vame</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value_vame</span> <span class="o">=</span> <span class="n">value_vame</span></div>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value_vame</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="create_state_indexer"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_state_indexer">[docs]</a><span class="k">class</span> <span class="nc">create_state_indexer</span><span class="p">:</span>
+<div class="viewcode-block" id="create_state_indexer.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_state_indexer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a callable class used as a getter for property of the form</span>
+<span class="sd">        ``index_X`` where ``X`` is a state of a state machine.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state_name: str</span>
+<span class="sd">            the name of state</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        callable:</span>
+<span class="sd">            A callable class which can be applied to any agent</span>
+<span class="sd">            which returns the index of the specified state.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_name</span> <span class="o">=</span> <span class="n">state_name</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_name</span><span class="p">)</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="create_my_state_indexer"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_my_state_indexer">[docs]</a><span class="k">class</span> <span class="nc">create_my_state_indexer</span><span class="p">:</span>
+<div class="viewcode-block" id="create_my_state_indexer.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_my_state_indexer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_machine_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a callable class used as a getter for property of the form</span>
+<span class="sd">        ``index_my_X`` where ``X`` is a state machine.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state_machine_name: str</span>
+<span class="sd">            the name of state machine</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        callable:</span>
+<span class="sd">            A callable class which can be applied to any agent which returns the index of the current state of the specified state machine if any, 0 otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_machine_name</span> <span class="o">=</span> <span class="n">state_machine_name</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_machine_name</span> <span class="ow">in</span> <span class="n">agent</span><span class="o">.</span><span class="n">statevars</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">statevars</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state_machine_name</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="create_lazy_ternary"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_lazy_ternary">[docs]</a><span class="k">class</span> <span class="nc">create_lazy_ternary</span><span class="p">:</span>
+<div class="viewcode-block" id="create_lazy_ternary.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_lazy_ternary.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">,</span> <span class="n">expression_if_true</span><span class="p">,</span> <span class="n">expression_if_false</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a callable class used to return a value depending on the condition. Evaluations of condition and values are delayed until requested, and non-relevant value is not even calculated.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        condition: str</span>
+<span class="sd">            the expression of the condition</span>
+<span class="sd">        expression_if_true: str</span>
+<span class="sd">            the expression of the value to calculate if the condition is true</span>
+<span class="sd">        expression_if_false: str</span>
+<span class="sd">            the expression of the value to calculate if the condition is false</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        callable:</span>
+<span class="sd">            A callable class which returns the value of value_value_if_value_if_true if the condition is fulfilled, otherwise the value of value_if_value_if_false.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">condition</span> <span class="o">=</span> <span class="n">condition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">if_true</span> <span class="o">=</span> <span class="n">expression_if_true</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">if_false</span> <span class="o">=</span> <span class="n">expression_if_false</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">if_true</span><span class="p">)</span> <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">condition</span><span class="p">)</span> <span class="k">else</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">if_false</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="create_lazy_OR"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_lazy_OR">[docs]</a><span class="k">class</span> <span class="nc">create_lazy_OR</span><span class="p">:</span>
+<div class="viewcode-block" id="create_lazy_OR.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_lazy_OR.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a callable class used to return a boolean OR on the conditions. Evaluation of conditions is delayed until requested, and returns true as soon as one condition is fulfilled.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        conditions: str</span>
+<span class="sd">            the list of the conditions to test</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        callable:</span>
+<span class="sd">            A callable class which returns the logical true if any condition is fulfilled, false otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span> <span class="o">=</span> <span class="n">conditions</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="n">condition</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="create_lazy_AND"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_lazy_AND">[docs]</a><span class="k">class</span> <span class="nc">create_lazy_AND</span><span class="p">:</span>
+<div class="viewcode-block" id="create_lazy_AND.__init__"><a class="viewcode-back" href="../../../emulsion.tools.html#emulsion.tools.getters.create_lazy_AND.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conditions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a callable class used to return a boolean AND on the conditions. Evaluation of conditions is delayed until requested, and returns false as soon as one condition is not fulfilled.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        conditions: str</span>
+<span class="sd">            the list of the conditions to test</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        callable:</span>
+<span class="sd">            A callable class which returns the logical false if any condition is false, true otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span> <span class="o">=</span> <span class="n">conditions</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">conditions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_information</span><span class="p">(</span><span class="n">condition</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
 </pre></div>
 
           </div>
@@ -679,17 +813,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -706,7 +838,7 @@
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

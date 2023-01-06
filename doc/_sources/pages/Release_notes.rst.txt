@@ -5,29 +5,29 @@ Release notes
 Notes on EMULSION 1.2
 *********************
 
-Release date: TBA
+Release date: Sept 2022
 
 
 Modelling language
 ==================
 
-- revised syntax to make compartment-based, hybrid and IBM models more
-  homogeneous
+- revised syntax to make compartment-based, hybrid and IBM models more homogeneous
 
   .. seealso::
 
-     Transition guide (TODO)
+     :ref:`Transition guide <Transition guide>`
 
-- enabled non-exponential distribution of durations in
-  compartment-based models (keyword ``duration`` in state definition)
-- introduced function ``DIV(a,b)`` which returns 0 if a=0, otherwise a/b
-
+- enabled non-exponential distribution of durations in compartment-based models (keyword ``duration`` in state definition)
+- introduced function ``DIV(a,b)`` which returns 0 if *a=0*, otherwise *a/b*
+- introduced function ``ROUND(a)`` to get the integer rounding of *a*
+- aggregate variables now accept a ``choice`` operator, which results in picking one of the collected values at random
+-
 
 Simulation engine
 =================
 
-- revised architecture of compartment-based models and hybrid models
-  to build appropriate groupings without duplicates
+- revised architecture of compartment-based models and hybrid models to build appropriate groupings without duplicates
+- optimised implementation of built-in variables/functions e.g. counts of groupings and state testing
 
 
 
@@ -40,8 +40,9 @@ Documentation
 Bugfixes
 ========
 
-- revised architecture of compartment-based models to enable correct
-  interactions between all state machines
+- revised architecture of compartment-based models to enable correct interactions between all state machines
+- changed loading of YAML file to ensure that no error occurs due to text encoding. Encoding is now expected to be utf-8; if not (e.g. specific to Windows, or latin-1), non-ASCII characters (e.g. accented letters) are replaced
+  by a symbol.
 
 
 

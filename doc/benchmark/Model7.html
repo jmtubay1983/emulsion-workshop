@@ -1,21 +1,19 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>Model 7 (M6 + new epidemiological state) &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,18 +33,18 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="model-7-m6-new-epidemiological-state">
-<h1>Model 7 (M6 + new epidemiological state)<a class="headerlink" href="#model-7-m6-new-epidemiological-state" title="Permalink to this headline">¶</a></h1>
+  <section id="model-7-m6-new-epidemiological-state">
+<h1>Model 7 (M6 + new epidemiological state)<a class="headerlink" href="#model-7-m6-new-epidemiological-state" title="Permalink to this heading">¶</a></h1>
 <p>Introducing a new epidemiological state at a late stage in modelling
 mainly consists in modifying the <code class="docutils literal notranslate"><span class="pre">health_state</span></code> state machine:</p>
 <ul class="simple">
-<li>a new state <code class="docutils literal notranslate"><span class="pre">E</span></code> is added to the list of states, associated with the
+<li><p>a new state <code class="docutils literal notranslate"><span class="pre">E</span></code> is added to the list of states, associated with the
 specification of a duration (defined in <code class="docutils literal notranslate"><span class="pre">parameters</span></code> as a
-species-dependent expression)</li>
-<li>the transition from <code class="docutils literal notranslate"><span class="pre">S</span></code> to <code class="docutils literal notranslate"><span class="pre">I</span></code> is split into a transition from <code class="docutils literal notranslate"><span class="pre">S</span></code>
-to <code class="docutils literal notranslate"><span class="pre">E</span></code> and a transition from <code class="docutils literal notranslate"><span class="pre">E</span></code> to <code class="docutils literal notranslate"><span class="pre">I</span></code></li>
-<li>in <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, expressions defining the prevalence are modified to count also
-individuals in <code class="docutils literal notranslate"><span class="pre">E</span></code> state</li>
+species-dependent expression)</p></li>
+<li><p>the transition from <code class="docutils literal notranslate"><span class="pre">S</span></code> to <code class="docutils literal notranslate"><span class="pre">I</span></code> is split into a transition from <code class="docutils literal notranslate"><span class="pre">S</span></code>
+to <code class="docutils literal notranslate"><span class="pre">E</span></code> and a transition from <code class="docutils literal notranslate"><span class="pre">E</span></code> to <code class="docutils literal notranslate"><span class="pre">I</span></code></p></li>
+<li><p>in <code class="docutils literal notranslate"><span class="pre">parameters</span></code>, expressions defining the prevalence are modified to count also
+individuals in <code class="docutils literal notranslate"><span class="pre">E</span></code> state</p></li>
 </ul>
 <p>To produce the diagrams of the state machines which control health
 states, age groups and species:</p>
@@ -463,7 +461,7 @@ individuals coming from outside the metapopulation:</p>
 </pre></div>
 </div>
 <p>which produced <a class="reference external" href="../_static/benchmark/model7-outputs.html">the following outputs</a></p>
-</div>
+</section>
 
 
           </div>
@@ -506,17 +504,15 @@ individuals coming from outside the metapopulation:</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -533,7 +529,7 @@ individuals coming from outside the metapopulation:</p>
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

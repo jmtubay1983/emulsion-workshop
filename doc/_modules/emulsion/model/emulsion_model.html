@@ -1,21 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>emulsion.model.emulsion_model &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../../../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -46,33 +43,33 @@
 <span class="c1"># [HEADER]</span>
 
 
-<span class="kn">from</span>   <span class="nn">pathlib</span>                 <span class="k">import</span> <span class="n">Path</span>
-<span class="kn">from</span>   <span class="nn">datetime</span>                <span class="k">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">from</span>   <span class="nn">copy</span>                    <span class="k">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span>   <span class="nn">pathlib</span>                 <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span>   <span class="nn">datetime</span>                <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span>   <span class="nn">copy</span>                    <span class="kn">import</span> <span class="n">deepcopy</span>
 
 <span class="kn">import</span> <span class="nn">yaml</span>
-<span class="kn">import</span> <span class="nn">numpy</span>                   <span class="k">as</span>     <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">dateutil.parser</span>         <span class="k">as</span>     <span class="nn">dup</span>
 
-<span class="kn">from</span>   <span class="nn">sympy</span>                   <span class="k">import</span> <span class="n">sympify</span><span class="p">,</span> <span class="n">Symbol</span>
+<span class="kn">from</span>   <span class="nn">sympy</span>                   <span class="kn">import</span> <span class="n">sympify</span><span class="p">,</span> <span class="n">Symbol</span>
 
-<span class="kn">from</span>   <span class="nn">collections</span>             <span class="k">import</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span>   <span class="nn">sortedcontainers</span>        <span class="k">import</span> <span class="n">SortedSet</span><span class="p">,</span> <span class="n">SortedDict</span>
-<span class="kn">from</span>   <span class="nn">jinja2</span>                  <span class="k">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span>
+<span class="kn">from</span>   <span class="nn">collections</span>             <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span>   <span class="nn">sortedcontainers</span>        <span class="kn">import</span> <span class="n">SortedSet</span><span class="p">,</span> <span class="n">SortedDict</span>
+<span class="kn">from</span>   <span class="nn">jinja2</span>                  <span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">PackageLoader</span>
 
 <span class="kn">import</span> <span class="nn">networkx</span>                <span class="k">as</span>     <span class="nn">nx</span>
 
-<span class="kn">from</span>   <span class="nn">emulsion.tools.state</span>    <span class="k">import</span> <span class="n">StateVarDict</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>     <span class="k">import</span> <span class="n">read_csv_prototypes</span><span class="p">,</span> <span class="n">read_from_file</span><span class="p">,</span> <span class="n">load_class</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.getters</span>  <span class="k">import</span> <span class="n">create_new_serial</span><span class="p">,</span> <span class="n">create_weighted_random</span><span class="p">,</span>\
-    <span class="n">create_successor_getter</span><span class="p">,</span> <span class="n">create_predecessor_getter</span><span class="p">,</span>\
-    <span class="n">make_random_prototype_getter</span><span class="p">,</span> <span class="n">make_generator_prototype_getter</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.calendar</span> <span class="k">import</span> <span class="n">EventCalendar</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>    <span class="k">import</span> <span class="n">debuginfo</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.state</span>    <span class="kn">import</span> <span class="n">StateVarDict</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>     <span class="kn">import</span> <span class="n">read_csv_prototypes</span><span class="p">,</span> <span class="n">read_from_file</span><span class="p">,</span> <span class="n">load_class</span>
+<span class="kn">from</span> <span class="nn">emulsion.tools.getters</span> <span class="kn">import</span> <span class="n">create_new_serial</span><span class="p">,</span> <span class="n">create_weighted_random</span><span class="p">,</span> \
+    <span class="n">create_successor_getter</span><span class="p">,</span> <span class="n">create_predecessor_getter</span><span class="p">,</span> \
+    <span class="n">make_random_prototype_getter</span><span class="p">,</span> <span class="n">make_generator_prototype_getter</span><span class="p">,</span> <span class="n">create_state_indexer</span><span class="p">,</span> <span class="n">create_my_state_indexer</span><span class="p">,</span> \
+    <span class="n">create_lazy_ternary</span><span class="p">,</span> <span class="n">create_lazy_AND</span><span class="p">,</span> <span class="n">create_lazy_OR</span><span class="p">,</span> <span class="n">create_duration_getter</span><span class="p">,</span> <span class="n">create_state_tester</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.calendar</span> <span class="kn">import</span> <span class="n">EventCalendar</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>    <span class="kn">import</span> <span class="n">debuginfo</span>
 
-<span class="kn">from</span>   <span class="nn">emulsion.model.functions</span>      <span class="k">import</span> <span class="n">DEFAULT_LEVEL_INFO</span><span class="p">,</span> <span class="n">DEFAULT_GROUPING_INFO</span><span class="p">,</span> <span class="n">AGGREG_COMP</span><span class="p">,</span> <span class="n">AGGREG_HYBRID</span><span class="p">,</span> <span class="n">AGGREG_METAPOP</span><span class="p">,</span> <span class="n">AGGREG_IBM</span><span class="p">,</span> <span class="n">make_function</span><span class="p">,</span> <span class="n">make_CSV_function</span><span class="p">,</span> <span class="n">make_when_condition</span><span class="p">,</span> <span class="n">make_statevar_getter</span><span class="p">,</span> <span class="n">make_model_value_getter</span>
-<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span>     <span class="k">import</span> <span class="n">SemanticException</span>
-<span class="kn">from</span>   <span class="nn">emulsion.model.state_machines</span> <span class="k">import</span> <span class="n">StateMachine</span>
+<span class="kn">from</span>   <span class="nn">emulsion.model.functions</span>      <span class="kn">import</span> <span class="n">DEFAULT_LEVEL_INFO</span><span class="p">,</span> <span class="n">DEFAULT_GROUPING_INFO</span><span class="p">,</span> <span class="n">AGGREG_COMP</span><span class="p">,</span> <span class="n">AGGREG_HYBRID</span><span class="p">,</span> <span class="n">AGGREG_METAPOP</span><span class="p">,</span> <span class="n">AGGREG_IBM</span><span class="p">,</span> <span class="n">make_function</span><span class="p">,</span> <span class="n">make_CSV_function</span><span class="p">,</span> <span class="n">make_when_condition</span><span class="p">,</span> <span class="n">make_statevar_getter</span><span class="p">,</span> <span class="n">make_model_value_getter</span>
+<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span>     <span class="kn">import</span> <span class="n">SemanticException</span>
+<span class="kn">from</span>   <span class="nn">emulsion.model.state_machines</span> <span class="kn">import</span> <span class="n">StateMachine</span>
 
 <span class="c1">#  ______                 _     _             __  __           _      _</span>
 <span class="c1"># |  ____|               | |   (_)           |  \/  |         | |    | |</span>
@@ -94,7 +91,7 @@
 <span class="sd">    etc.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="EmulsionModel.__init__"><a class="viewcode-back" href="../../../emulsion_for_modellers.html#emulsion.model.emulsion_model.EmulsionModel.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">input_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">changed_values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="EmulsionModel.__init__"><a class="viewcode-back" href="../../../emulsion_for_modellers.html#emulsion.model.emulsion_model.EmulsionModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">input_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">changed_values</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Instantiate the model either from a configuration file or from a</span>
 <span class="sd">        string. Both must contain a YAML-based description of the model.</span>
 
@@ -118,7 +115,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">model_description</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EmulsionModel.normalize_format"><a class="viewcode-back" href="../../../emulsion_for_modellers.html#emulsion.model.emulsion_model.EmulsionModel.normalize_format">[docs]</a>    <span class="k">def</span> <span class="nf">normalize_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -508,8 +505,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">modules</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;modules&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="s1">&#39;parameters&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">:</span>
             <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;parameters&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sympify</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">],</span>
-                                               <span class="nb">locals</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">)</span></div>
+                <span class="c1"># experimental</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_dict</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">sympify</span><span class="p">(</span><span class="n">val</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">],</span> <span class="nb">locals</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">)</span></div>
+
+
 
 <div class="viewcode-block" id="EmulsionModel.build_statevars"><a class="viewcode-back" href="../../../emulsion_for_modellers.html#emulsion.model.emulsion_model.EmulsionModel.build_statevars">[docs]</a>    <span class="k">def</span> <span class="nf">build_statevars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse the description of the model and extract the state</span>
@@ -1010,30 +1013,52 @@
         <span class="k">if</span> <span class="s1">&#39;state_machines&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">machine_name</span><span class="p">,</span> <span class="n">description</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;state_machines&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">state_machines</span><span class="p">[</span><span class="n">machine_name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># to build later</span>
-                <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;duration elapsed (time units) in current </span><span class="si">{}</span><span class="s2"> state&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+
                 <span class="n">prop_name</span> <span class="o">=</span> <span class="s1">&#39;duration_in_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+                <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;duration elapsed (time units) in current </span><span class="si">{}</span><span class="s2"> state&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
                 <span class="c1"># self._description[&#39;statevars&#39;][prop_name] = {&#39;desc&#39;: desc}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;statevars&#39;</span><span class="p">][</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
-                <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;time step when agent entered current </span><span class="si">{}</span><span class="s2"> state&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_duration_getter</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+
                 <span class="n">prop_name</span> <span class="o">=</span> <span class="s1">&#39;_time_entered_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+                <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;time step when agent entered current </span><span class="si">{}</span><span class="s2"> state&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;statevars&#39;</span><span class="p">][</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
-                <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;time step after which agent is allowed to leave current </span><span class="si">{}</span><span class="s2"> state&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+
                 <span class="n">prop_name</span> <span class="o">=</span> <span class="s1">&#39;_time_to_exit_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+                <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;time step after which agent is allowed to leave current </span><span class="si">{}</span><span class="s2"> state&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;statevars&#39;</span><span class="p">][</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+
+                <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Numeric value associated to current state of state machine </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+                <span class="n">prop_name</span> <span class="o">=</span> <span class="s1">&#39;index_my_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;statevars&#39;</span><span class="p">][</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">desc</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_my_state_indexer</span><span class="p">(</span><span class="n">machine_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+
                 <span class="k">for</span> <span class="n">statedict</span> <span class="ow">in</span> <span class="n">description</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">]:</span>
                     <span class="k">for</span> <span class="n">state_name</span> <span class="ow">in</span> <span class="n">statedict</span><span class="p">:</span>
+                        <span class="c1">## define &quot;is_X&quot;</span>
                         <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Test if </span><span class="si">{}</span><span class="s2"> = </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">,</span> <span class="n">state_name</span><span class="p">)</span>
                         <span class="n">prop_name</span> <span class="o">=</span> <span class="s1">&#39;is_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state_name</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;statevars&#39;</span><span class="p">][</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
                         <span class="c1"># self.statevars[prop_name] = desc</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span></div>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_state_tester</span><span class="p">(</span><span class="n">state_name</span><span class="p">)</span>
 
+                        <span class="c1">## same for &quot;index_X&quot;</span>
+                        <span class="n">desc</span> <span class="o">=</span> <span class="s2">&quot;Return numeric value of state </span><span class="si">{}</span><span class="s2"> in state machine </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state_name</span><span class="p">,</span> <span class="n">machine_name</span><span class="p">)</span>
+                        <span class="n">prop_name</span> <span class="o">=</span> <span class="s1">&#39;index_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">state_name</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">[</span><span class="s1">&#39;statevars&#39;</span><span class="p">][</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;desc&#39;</span><span class="p">:</span> <span class="n">desc</span><span class="p">}</span>
+                        <span class="c1"># self.statevars[prop_name] = desc</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">create_state_indexer</span><span class="p">(</span><span class="n">state_name</span><span class="p">)</span></div>
+                        
 
 <div class="viewcode-block" id="EmulsionModel.build_state_machines"><a class="viewcode-back" href="../../../emulsion_for_modellers.html#emulsion.model.emulsion_model.EmulsionModel.build_state_machines">[docs]</a>    <span class="k">def</span> <span class="nf">build_state_machines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse the description of the model and build all the</span>
@@ -1050,9 +1075,13 @@
                         <span class="k">break</span>
                 <span class="k">if</span> <span class="n">level_of_machine</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;Statemachine </span><span class="si">{}</span><span class="s1"> is associated with no level!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">machine_name</span><span class="p">))</span>
-                <span class="c1">## ASSUMING THAT EACH LEVEL HAS ONLY ONE UPPER LEVEL</span>
-                <span class="n">upper_level</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels_graph</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">level_of_machine</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-                <span class="n">aggregation_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">upper_level</span><span class="p">][</span><span class="s1">&#39;aggregation_type&#39;</span><span class="p">]</span>
+                <span class="c1">## ASSUMING THAT EACH LEVEL HAS AT MOST UPPER LEVEL</span>
+                <span class="n">l_upper_levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">levels_graph</span><span class="o">.</span><span class="n">predecessors</span><span class="p">(</span><span class="n">level_of_machine</span><span class="p">))</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">l_upper_levels</span><span class="p">):</span>
+                    <span class="n">upper_level</span> <span class="o">=</span> <span class="n">l_upper_levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">aggregation_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">upper_level</span><span class="p">][</span><span class="s1">&#39;aggregation_type&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">aggregation_type</span> <span class="o">=</span> <span class="s1">&#39;hybrid&#39;</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">state_machines</span><span class="p">[</span><span class="n">machine_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">StateMachine</span><span class="p">(</span><span class="n">machine_name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">aggregation_type</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="EmulsionModel.build_compartment_desc"><a class="viewcode-back" href="../../../emulsion_for_modellers.html#emulsion.model.emulsion_model.EmulsionModel.build_compartment_desc">[docs]</a>    <span class="k">def</span> <span class="nf">build_compartment_desc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1147,6 +1176,11 @@
         <span class="c1">### expressions at the same time (halting when no change</span>
         <span class="c1">### occurs) instead of iterating over each expression one by</span>
         <span class="c1">### one</span>
+
+        <span class="c1"># experimental</span>
+        <span class="c1"># if isinstance(expression, dict):</span>
+        <span class="c1">#     return self.parse_if(expression)</span>
+
         <span class="n">result</span> <span class="o">=</span> <span class="n">sympify</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="nb">locals</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_namespace</span><span class="p">)</span>
         <span class="n">expr</span> <span class="o">=</span> <span class="n">result</span>
         <span class="n">symbs</span> <span class="o">=</span> <span class="p">{</span><span class="n">s</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
@@ -1159,6 +1193,84 @@
                      <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">expr</span><span class="o">.</span><span class="n">free_symbols</span>
                      <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="c1"># experimental</span>
+<div class="viewcode-block" id="EmulsionModel.parse_dict"><a class="viewcode-back" href="../../../emulsion.model.html#emulsion.model.emulsion_model.EmulsionModel.parse_dict">[docs]</a>    <span class="k">def</span> <span class="nf">parse_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;if&#39;</span> <span class="ow">in</span> <span class="n">expression_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_if</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;or&#39;</span> <span class="ow">in</span> <span class="n">expression_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_or</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;and&#39;</span> <span class="ow">in</span> <span class="n">expression_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_and</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;Unknown expression for parameter </span><span class="si">{}</span><span class="s1">:</span><span class="se">\n\t</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">))</span></div>
+
+    <span class="c1"># experimental</span>
+<div class="viewcode-block" id="EmulsionModel.parse_if"><a class="viewcode-back" href="../../../emulsion.model.html#emulsion.model.emulsion_model.EmulsionModel.parse_if">[docs]</a>    <span class="k">def</span> <span class="nf">parse_if</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;then&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expression_dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;THEN clause missing in expression </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expression_dict</span><span class="p">))</span>
+        <span class="k">if</span> <span class="s1">&#39;else&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expression_dict</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;ELSE clause missing in expression </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">expression_dict</span><span class="p">))</span>
+
+        <span class="n">cond</span> <span class="o">=</span> <span class="n">expression_dict</span><span class="p">[</span><span class="s1">&#39;if&#39;</span><span class="p">]</span>
+        <span class="n">if_true</span> <span class="o">=</span> <span class="n">expression_dict</span><span class="p">[</span><span class="s1">&#39;then&#39;</span><span class="p">]</span>
+        <span class="n">if_false</span> <span class="o">=</span> <span class="n">expression_dict</span><span class="p">[</span><span class="s1">&#39;else&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">val_cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_dict</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">cond</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">cond</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val_cond</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">val_cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_expression</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cond</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">if_true</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">val_true</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_dict</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">if_true</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">if_true</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val_true</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">val_true</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_expression</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">if_true</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">if_false</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">val_false</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_dict</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">if_false</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">if_false</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val_false</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">val_false</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_expression</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">if_false</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">create_lazy_ternary</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">cond</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">if_true</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">if_false</span><span class="p">))</span></div>
+
+    <span class="c1"># experimental</span>
+<div class="viewcode-block" id="EmulsionModel.parse_or"><a class="viewcode-back" href="../../../emulsion.model.html#emulsion.model.emulsion_model.EmulsionModel.parse_or">[docs]</a>    <span class="k">def</span> <span class="nf">parse_or</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">):</span>
+        <span class="n">l_conditions</span> <span class="o">=</span> <span class="n">expression_dict</span><span class="p">[</span><span class="s1">&#39;or&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l_conditions</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;&quot;or:&quot; clause must be followed by a list, found instead: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l_conditions</span><span class="p">))</span>
+
+        <span class="n">l_expressions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">l_conditions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">val_cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_dict</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val_cond</span>
+                <span class="n">l_expressions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">val_cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_expression</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">))</span>
+                <span class="n">l_expressions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val_cond</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">create_lazy_OR</span><span class="p">(</span><span class="n">l_expressions</span><span class="p">)</span></div>
+
+    <span class="c1"># experimental</span>
+<div class="viewcode-block" id="EmulsionModel.parse_and"><a class="viewcode-back" href="../../../emulsion.model.html#emulsion.model.emulsion_model.EmulsionModel.parse_and">[docs]</a>    <span class="k">def</span> <span class="nf">parse_and</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_name</span><span class="p">,</span> <span class="n">expression_dict</span><span class="p">):</span>
+        <span class="n">l_conditions</span> <span class="o">=</span> <span class="n">expression_dict</span><span class="p">[</span><span class="s1">&#39;and&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l_conditions</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;&quot;and:&quot; clause must be followed by a list, found instead: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">l_conditions</span><span class="p">))</span>
+
+        <span class="n">l_expressions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">l_conditions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">val_cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_dict</span><span class="p">(</span><span class="n">param_name</span><span class="p">,</span> <span class="n">condition</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val_cond</span>
+                <span class="n">l_expressions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">val_cond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_expression</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">condition</span><span class="p">))</span>
+                <span class="n">l_expressions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val_cond</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">create_lazy_AND</span><span class="p">(</span><span class="n">l_expressions</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="EmulsionModel.build_actions"><a class="viewcode-back" href="../../../emulsion_for_modellers.html#emulsion.model.emulsion_model.EmulsionModel.build_actions">[docs]</a>    <span class="k">def</span> <span class="nf">build_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Parse the description of the model and extract the actions</span>
@@ -1186,17 +1298,28 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># collect &#39;true&#39; values in the parameters</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># # experimental</span>
+            <span class="c1"># if isinstance(expression, dict):</span>
+            <span class="c1">#     self._values[param] = create_lazy_ternary(expression[&#39;if&#39;], expression[&#39;then&#39;], expression[&#39;else&#39;])</span>
+            <span class="c1">#     continue</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand_expression</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="k">except</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_function</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">modules</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">)</span>
         <span class="k">for</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expressions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># # experimental</span>
+            <span class="c1"># if isinstance(expression, dict):</span>
+            <span class="c1">#     self._values[param] = create_lazy_ternary(expression[&#39;if&#39;], expression[&#39;then&#39;], expression[&#39;else&#39;])</span>
+            <span class="c1">#     continue</span>
             <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">expand_expression</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
-            <span class="c1">## DO NOT REALLOCATE EXPRESSIONS ALREADY COMPUTED AS CALLABLE OBJECTS</span>
+            <span class="c1">## DO NOT REALLOCATE EXPRESSIONS ALREADY COMPUTED AS CALLABLE OBJECTS --- NOR STATEVARS !!!</span>
             <span class="c1">## (introduced to support data-based parameters)</span>
             <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">param</span><span class="p">]):</span>
                 <span class="n">debuginfo</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="s1">&#39;from EXPRESSIONS has value&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">param</span><span class="p">],</span> <span class="s1">&#39;instead of&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="p">:</span>
+                <span class="c1"># debuginfo(param, &#39;already in STATEVARS&#39;)</span>
                 <span class="k">continue</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">param</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -1333,17 +1456,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -1360,7 +1481,7 @@
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

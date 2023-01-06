@@ -38,13 +38,27 @@ publishing, with a reference to the following article:
 Selected publications
 *********************
 
-- On bovine respiratory disease (BRD) in feedlots:
+- On Swine influenza virus in batch-rearing pig farms:
 
-  S. Picault, P. Ezanno, S. Assié (2019). "Combining early
-  hyperthermia detection with metaphylaxis for reducing antibiotics
-  usage in newly received beef bulls at fattening operations: a
-  simulation-based approach", in: *SVEPM Annual Conference and General
-  Meeting* (in press)
+  V. Sicard, M. Andraud, S. Picault (2022). "Coupling spatial and temporal structure
+  in batch rearing modeling for understanding the spread of the swine influenza A virus",
+  *Proceedings of the Conference of the Society for Veterinary Epidemiology and Preventive
+  Medicine (SVEPM)*
+
+- On bovine respiratory disease (BRD) in fattening farms:
+
+  S. Picault, P. Ezanno, S. Assié (2019). "Combining early hyperthermia detection
+  with metaphylaxis for reducing antibiotics usage in newly received beef bulls at
+  fattening operations: a simulation-based approach", *Proceedings of the Conference
+  of the Society for Veterinary Epidemiology and Preventive Medicine (SVEPM)*, p. 148-159
+
+- On the generation of synthetic epidemiological data for a modelling challenge:
+
+  S. Picault, T. Vergne, M. Mancini, S. Bareille, P. Ezanno (2022). "The African
+  swine fever modelling challenge: Objectives, model description and synthetic data
+  generation", *Epidemics* 40
+
+  DOI: `10.1016/j.epidem.2022.100616 <https://doi.org/10.1016/j.epidem.2022.100616>`_
 
 - On Q fever (Coxiellosis) in dairy herds:
 
@@ -55,7 +69,7 @@ Selected publications
        `BioRXiV
        <http://biorxiv.org/content/early/2018/12/10/491605.abstract>`_
 
-       DOI: `10.1101/491605 <http://doi.org/10.1101/491605>`_
+       DOI: `10.1101/491605 <https://doi.org/10.1101/491605>`_
 
   - S. Picault, Y.-L. Huang, V. Sicard, F. Beaudeau, P. Ezanno
     (2017). "A Multi-Level Multi-Agent Simulation Framework in Animal
@@ -64,16 +78,28 @@ Selected publications
     Systems (PAAMS)*, Lecture Notes in Computer Science
     10349, p. 209-221, Springer.
 
-    DOI: `10.1007/978-3-319-59930-4_17 <http://doi.org/10.1007/978-3-319-59930-4_17>`_
+    DOI: `10.1007/978-3-319-59930-4_17 <https://doi.org/10.1007/978-3-319-59930-4_17>`_
 
 - On Artificial Intelligence research involved in EMULSION:
+
+  - V. Sicard, M. Andraud, S. Picault (2022). "A declarative modelling language
+    for the design of complex structured agent-based epidemiological models",
+    *Proceedings of the 20th International Conference on Practical Applications
+    of Agents and Multi-Agent Systems (PAAMS)*, Springer.
+
+  - V. Sicard, M. Andraud, S. Picault (2021). "Organization as a multi-level
+    design pattern for agent-based simulation of complex systems",
+    *Proceedings of the 13th International Conference on Agents and Artificial
+    Intelligence (ICAART'2021)*, p. 232-241, SCITEPRESS
+
+    DOI: `10.5220/0010223202320241 <https://doi.org/10.5220/0010223202320241>`_
 
   - P. Mathieu, G. Morvan, S. Picault (2018). "Multi-level agent-based
     simulations: Four design patterns", *Simulation Modelling Practice
     and Theory* 83, p. 51-64, Agent-Based Modelling and Simulation
     special issue Elsevier.
 
-    DOI: `10.1016/j.simpat.2017.12.015 <http://doi.org/10.1016/j.simpat.2017.12.015>`_
+    DOI: `10.1016/j.simpat.2017.12.015 <https://doi.org/10.1016/j.simpat.2017.12.015>`_
 
   - S. Picault, Y.-L. Huang, V. Sicard, P. Ezanno (2017). "Enhancing
     Sustainability of Complex Epidemiological Models through a Generic
@@ -81,15 +107,14 @@ Selected publications
     International Joint Conference on Artificial Intelligence
     (IJCAI)*, AAAI, p. 374-380.
 
-    DOI: `10.24963/ijcai.2017/53 <http://doi.org/10.24963/ijcai.2017/53>`_
+    DOI: `10.24963/ijcai.2017/53 <https://doi.org/10.24963/ijcai.2017/53>`_
 
   - S. Picault, P. Mathieu (2011). "An Interaction-Oriented Model for
     Multi-Scale Simulation", in: T. Walsh (ed.), *22nd International
     Joint Conference on Artificial Intelligence (IJCAI)*,
     AAAI, p. 332-337.
 
-    DOI: `10.5591/978-1-57735-516-8/IJCAI11-065
-    <http://doi.org/10.5591/978-1-57735-516-8/IJCAI11-065>`_
+    DOI: `10.5591/978-1-57735-516-8/IJCAI11-065 <https://doi.org/10.5591/978-1-57735-516-8/IJCAI11-065>`_
 
 
 Acknowledgements
@@ -97,16 +122,24 @@ Acknowledgements
 
 This work was carried out with the financial support of:
 
-  - the French Research Agency (ANR), Program Investments for the
-    Future, project ANR-10-BINF-07 (MIHMES)
-  - the European Union through the European fund for the regional
-    development (FEDER) of Pays de la Loire
-  - the French Research Agency (ANR), project ANR-16-CE32-0007-01
-    (CADENCE)
   - INRAE, the French National Research Institute for Agriculture,
-    Food and Environment (Animal Health Division)
-  - the SANT'Innov project of the For and On Regional Development
-    (PSDR) French research programme, which is funded by INRAE and the
-    French regions of Bretagne, Pays de la Loire, Normandie and
-    Nouvelle Aquitaine.
-  - the Région Pays de la Loire
+    Food and Environment:
+
+    - Animal Health Division
+    - Partnerships and Innovation Transfer Division
+
+  - the European Union:
+
+    - the European fund for the regional development (FEDER) of Pays de la Loire
+    - project H2020 DECIDE (101000494)
+
+  - the French Research Agency (ANR):
+
+    - Program Investments for the Future, project ANR-10-BINF-07 (MIHMES)
+    - project ANR-16-CE32-0007-01 (CADENCE)
+
+  - the French Région Pays de la Loire: PULSAR grant
+  - the Carnot Institute "France Futur Élevage" (SEPTIME)
+  - the For and On Regional Development (PSDR) French research programme, funded by
+    INRAE and the French regions of Bretagne, Pays de la Loire, Normandie and Nouvelle
+    Aquitaine (SANT'Innov)

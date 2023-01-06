@@ -1,21 +1,19 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>Model 6 (M5 + external forcing data) &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,22 +33,22 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="model-6-m5-external-forcing-data">
-<h1>Model 6 (M5 + external forcing data)<a class="headerlink" href="#model-6-m5-external-forcing-data" title="Permalink to this headline">¶</a></h1>
+  <section id="model-6-m5-external-forcing-data">
+<h1>Model 6 (M5 + external forcing data)<a class="headerlink" href="#model-6-m5-external-forcing-data" title="Permalink to this heading">¶</a></h1>
 <p>In this example, introducing external forcing data
 (<a class="reference external" href="../_static/benchmark/moves.csv">moves.csv</a>) has an impact on the
 Python code add-ons:</p>
 <ul class="simple">
-<li>at instantiation, class <code class="docutils literal notranslate"><span class="pre">Metapopulation</span></code> reads the CSV file and
+<li><p>at instantiation, class <code class="docutils literal notranslate"><span class="pre">Metapopulation</span></code> reads the CSV file and
 restructures the data in a more convenient way (nested dictionaries,
 keys being time steps instead of dates, and ID of source
-populations)</li>
-<li>other processes at population scale are redefined to take those data
-into account</li>
-<li>the metapopulation handles data-driven movements coming from outside
+populations)</p></li>
+<li><p>other processes at population scale are redefined to take those data
+into account</p></li>
+<li><p>the metapopulation handles data-driven movements coming from outside
 the metapopulation, to create new host individuals with the proper
 age group. Their health state is determined according to the
-expression <code class="docutils literal notranslate"><span class="pre">external_risk</span></code> defined in section <code class="docutils literal notranslate"><span class="pre">parameters</span></code>.</li>
+expression <code class="docutils literal notranslate"><span class="pre">external_risk</span></code> defined in section <code class="docutils literal notranslate"><span class="pre">parameters</span></code>.</p></li>
 </ul>
 <p>Besides, to be able to set this external risk to the prevalence in the
 metapopulation, aggregate variables are defined in the EMULSION model
@@ -389,16 +387,16 @@ used.</p>
 <span class="sd">Python add-on for model 6 (Epidemiological Benchmark)</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span>   <span class="nn">pathlib</span>               <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span>   <span class="nn">pathlib</span>               <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">dateutil.parser</span>       <span class="k">as</span>     <span class="nn">dup</span>
 <span class="kn">import</span> <span class="nn">numpy</span>                 <span class="k">as</span>     <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="k">import</span> <span class="n">MetapopProcessManager</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="k">import</span> <span class="n">AutoStructuredView</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="k">import</span> <span class="n">MultiProcessManager</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="k">import</span> <span class="n">SimpleView</span>
-<span class="kn">from</span> <span class="nn">emulsion.agent.atoms</span> <span class="k">import</span> <span class="n">AtomAgent</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="kn">import</span> <span class="n">MetapopProcessManager</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="kn">import</span> <span class="n">AutoStructuredView</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.managers</span> <span class="kn">import</span> <span class="n">MultiProcessManager</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.views</span> <span class="kn">import</span> <span class="n">SimpleView</span>
+<span class="kn">from</span> <span class="nn">emulsion.agent.atoms</span> <span class="kn">import</span> <span class="n">AtomAgent</span>
 
 <span class="n">DATA_FILE</span> <span class="o">=</span> <span class="s1">&#39;moves.csv&#39;</span>
 
@@ -558,14 +556,14 @@ used.</p>
 metapopulation, we ran the model with 10 populations instead of 20
 (one stochastic repetition):</p>
 <ul>
-<li><p class="first">with constant external risk (0.1) for individuals coming from outside the
+<li><p>with constant external risk (0.1) for individuals coming from outside the
 metapopulation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>emulsion run --plot model6.yaml -r <span class="m">1</span> -p <span class="nv">nb_populations</span><span class="o">=</span><span class="m">10</span> -p <span class="nv">use_metapop_prevalence</span><span class="o">=</span><span class="m">0</span>
 </pre></div>
 </div>
 <p>which produced <a class="reference external" href="../_static/benchmark/model6-constant-outputs.html">the following outputs</a></p>
 </li>
-<li><p class="first">with external risk equal to the prevalence in the whole
+<li><p>with external risk equal to the prevalence in the whole
 metapopulation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>emulsion run --plot model6.yaml -r <span class="m">1</span> -p <span class="nv">nb_populations</span><span class="o">=</span><span class="m">10</span> -p <span class="nv">use_metapop_prevalence</span><span class="o">=</span><span class="m">1</span>
 </pre></div>
@@ -574,7 +572,7 @@ metapopulation:</p>
 </li>
 </ul>
 <p>State machine diagrams are the same as in Model 4.</p>
-</div>
+</section>
 
 
           </div>
@@ -617,17 +615,15 @@ metapopulation:</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -644,7 +640,7 @@ metapopulation:</p>
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

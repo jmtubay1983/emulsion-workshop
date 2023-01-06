@@ -1,21 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>emulsion.agent.managers.multi_process_manager &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../../../../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -45,20 +42,19 @@
 
 <span class="c1"># [HEADER]</span>
 
-<span class="kn">from</span>   <span class="nn">collections</span>               <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span>   <span class="nn">collections</span>               <span class="kn">import</span> <span class="n">OrderedDict</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>                     <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span>   <span class="nn">emulsion.agent.exceptions</span> <span class="k">import</span> <span class="n">LevelException</span>
-<span class="kn">from</span>   <span class="nn">emulsion.agent.views</span>      <span class="k">import</span> <span class="n">AdaptiveView</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>       <span class="k">import</span> <span class="n">load_class</span><span class="p">,</span> <span class="n">select_random</span><span class="p">,</span>\
+<span class="kn">from</span>   <span class="nn">emulsion.agent.exceptions</span> <span class="kn">import</span> <span class="n">LevelException</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.views</span>      <span class="kn">import</span> <span class="n">AdaptiveView</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>       <span class="kn">import</span> <span class="n">load_class</span><span class="p">,</span> <span class="n">select_random</span><span class="p">,</span>\
     <span class="n">add_all_test_properties</span><span class="p">,</span> <span class="n">add_all_relative_population_getters</span><span class="p">,</span> <span class="n">AGENTS</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>      <span class="k">import</span> <span class="n">debuginfo</span>
-<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span> <span class="k">import</span> <span class="n">SemanticException</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>      <span class="kn">import</span> <span class="n">debuginfo</span>
+<span class="kn">from</span>   <span class="nn">emulsion.model.exceptions</span> <span class="kn">import</span> <span class="n">SemanticException</span>
 
-
-<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.group_manager</span>  <span class="k">import</span>  <span class="n">GroupManager</span>
-<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.abstract_process_manager</span>  <span class="k">import</span>  <span class="n">AbstractProcessManager</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.group_manager</span>  <span class="kn">import</span>  <span class="n">GroupManager</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.abstract_process_manager</span>  <span class="kn">import</span>  <span class="n">AbstractProcessManager</span>
 
 
 <span class="c1">#  __  __       _ _   _ _____</span>
@@ -86,7 +82,7 @@
 <span class="sd">    values, such as booleans or enumerations</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="MultiProcessManager.__init__"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.multi_process_manager.MultiProcessManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">others</span><span class="p">):</span>
+<div class="viewcode-block" id="MultiProcessManager.__init__"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.multi_process_manager.MultiProcessManager.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">others</span><span class="p">):</span>
         <span class="n">view_class</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">load_class</span><span class="p">(</span>
             <span class="o">**</span><span class="n">model</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">level</span><span class="p">][</span><span class="s1">&#39;super&#39;</span><span class="p">][</span><span class="s1">&#39;master&#39;</span><span class="p">]</span>
         <span class="p">)</span>
@@ -113,6 +109,11 @@
 <span class="sd">            - python_method    ## method process</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># a list of tuples (process name, order) for state machine and</span>
+        <span class="c1"># method processes order can be None otherwise (processes</span>
+        <span class="c1"># running a state machine on a grouping) order is the index of</span>
+        <span class="c1"># the state machine to run</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l_processes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="c1">## TODO: dispatch in sub-classes</span>
         <span class="c1">## 1 - in current level, search for possible method/statemachine processes</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">processes</span><span class="p">:</span>
@@ -123,43 +124,71 @@
                 <span class="k">if</span> <span class="n">process_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_machines</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">grouping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">add_statemachine_process</span><span class="p">(</span><span class="n">process_name</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">l_processes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">process_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
                     <span class="c1"># otherwise this state machine should be handled by a compart process at upper level</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">add_method_process</span><span class="p">(</span><span class="n">process_name</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">l_processes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">process_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 
-        <span class="c1">## 2 - in sublevels, search for possible grouping processes (which can only occur on the MASTER grouping)</span>
+        <span class="c1">## 2 - in sublevels, search for possible grouping processes</span>
         <span class="n">sublevel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_default_sublevel</span><span class="p">()</span>
         <span class="c1">## store groupings that are created for real</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">l_nonsubstituted_groupings</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">sublevel</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">processes</span><span class="p">:</span>
             <span class="c1"># iterate over all process names defined at sublevel</span>
             <span class="k">for</span> <span class="n">d_process</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">processes</span><span class="p">[</span><span class="n">sublevel</span><span class="p">]:</span>
-                <span class="c1">## TODO: CHECK</span>
+                <span class="c1"># debuginfo(&quot;sublevel:&quot;, sublevel, &quot; -- d_process:&quot;, d_process)</span>
+                <span class="c1"># get key and value from a dict which contains only one key...</span>
                 <span class="n">process_name</span><span class="p">,</span> <span class="n">grouping</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">d_process</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">process_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_machines</span><span class="p">:</span>
-                    <span class="c1"># this should be a state machine process at the sublevel</span>
+                    <span class="c1">## TODO: CHECK</span>
+                    <span class="c1"># this must be a method process at the sublevel =&gt; ignore</span>
                     <span class="k">continue</span>
                 <span class="k">if</span> <span class="n">grouping</span> <span class="o">==</span> <span class="s1">&#39;MASTER&#39;</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">SemanticException</span><span class="p">(</span><span class="s1">&#39;Unconsistent grouping MASTER used for level </span><span class="si">{}</span><span class="s1"> with process </span><span class="si">{}</span><span class="s1"> (do not associate processes with special grouping &quot;MASTER&quot; in hybrid models)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sublevel</span><span class="p">,</span> <span class="n">process_name</span><span class="p">))</span>
                 <span class="k">if</span> <span class="n">grouping</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1">## TODO: CHECK</span>
+                    <span class="c1"># this must be a state machine process at the sublevel =&gt; ignore</span>
                     <span class="k">continue</span>
-                <span class="c1">## add a compart prcess associated with the MASTER grouping</span>
+                <span class="c1">## add a compart process associated with the MASTER grouping</span>
                 <span class="n">compart_properties</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">compartments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">][</span><span class="n">grouping</span><span class="p">])</span>
+                <span class="c1"># debuginfo(&quot;compart_properties:&quot;, compart_properties)</span>
                 <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;compart_manager&#39;</span><span class="p">,</span> <span class="s1">&#39;compart_class&#39;</span><span class="p">]:</span>
                     <span class="k">if</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">compart_properties</span><span class="p">:</span>
                         <span class="n">class_desc</span> <span class="o">=</span> <span class="n">compart_properties</span><span class="p">[</span><span class="n">keyword</span><span class="p">]</span>
                         <span class="n">compart_properties</span><span class="p">[</span><span class="n">keyword</span><span class="p">]</span> <span class="o">=</span> <span class="n">load_class</span><span class="p">(</span><span class="o">**</span><span class="n">class_desc</span><span class="p">)</span>
+                <span class="c1"># debuginfo(self.level, process_name, grouping, self.model.substitution_dict[self.level])</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">compart_properties</span><span class="p">[</span><span class="s1">&#39;state_machines&#39;</span><span class="p">]):</span>
+                    <span class="c1"># debuginfo(process_name, &#39;-&gt;&#39;, compart_properties[&#39;state_machines&#39;])</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">add_compart_process</span><span class="p">(</span><span class="n">grouping</span><span class="p">,</span> <span class="o">**</span><span class="n">compart_properties</span><span class="p">)</span>
+                    <span class="n">group_manager</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">grouping</span><span class="p">]</span>
+                    <span class="n">machine_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">machine</span><span class="o">.</span><span class="n">machine_name</span> <span class="k">for</span> <span class="n">machine</span> <span class="ow">in</span> <span class="n">group_manager</span><span class="o">.</span><span class="n">l_state_machines</span><span class="p">]</span>
+                    <span class="c1"># debuginfo(process_name, machine_names)</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">machine_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">process_name</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">l_processes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">grouping</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">l_nonsubstituted_groupings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grouping</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># process operating on a virtual grouping -&gt; substitute true grouping</span>
+                    <span class="n">substitution_grouping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">substitution_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">][</span><span class="n">grouping</span><span class="p">]</span>
+                    <span class="n">compart_properties</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">compartments</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">][</span><span class="n">substitution_grouping</span><span class="p">])</span>
+                    <span class="n">machine_names</span> <span class="o">=</span> <span class="n">compart_properties</span><span class="p">[</span><span class="s1">&#39;state_machines&#39;</span><span class="p">]</span>
+                    <span class="c1"># debuginfo(process_name, machine_names)</span>
+                    <span class="n">index</span> <span class="o">=</span> <span class="n">machine_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">process_name</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">l_processes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">substitution_grouping</span><span class="p">,</span> <span class="n">index</span><span class="p">))</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">add_relative_counts</span><span class="p">()</span>
 
-        <span class="c1">## ADD is_X and duration_in_machine properties for state</span>
-        <span class="c1">## machines used as StateMachineProcesses for the current</span>
-        <span class="c1">## population</span>
-        <span class="n">add_all_test_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_relative_counts</span><span class="p">()</span></div>
+
+        <span class="c1"># debuginfo(&#39;PROCESSES:&#39;, self.l_processes)</span>
+
+        <span class="c1">## EXPERIMENTAL - replaced by callable class in the model</span>
+        <span class="c1"># ## ADD is_X and duration_in_machine properties for state</span>
+        <span class="c1"># ## machines used as StateMachineProcesses for the current</span>
+        <span class="c1"># ## population</span>
+        <span class="c1"># add_all_test_properties(self)</span>
 
 <div class="viewcode-block" id="MultiProcessManager.add_relative_counts"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.multi_process_manager.MultiProcessManager.add_relative_counts">[docs]</a>    <span class="k">def</span> <span class="nf">add_relative_counts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1">## once all &#39;real&#39; groupings are created, add getters for relative population counts (e.g. &#39;total_my_species_other_health_state&#39;)</span>
@@ -171,11 +200,15 @@
             <span class="n">t_key_variables</span> <span class="o">=</span> <span class="n">compart_properties</span><span class="p">[</span><span class="s1">&#39;key_variables&#39;</span><span class="p">]</span>
             <span class="c1">## only add automatically generated variables</span>
             <span class="n">subst_grouping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">substitution_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">][</span><span class="n">grouping_name</span><span class="p">]</span>
+            <span class="c1"># debuginfo(&quot;===&gt;&quot;, self.model.substitution_dict, &#39;--&gt;&#39;, grouping_name)</span>
             <span class="c1">## total_X_Y</span>
+            <span class="c1"># debuginfo(&#39;####&#39;, [key in self.model.state_machines for key in t_key_variables])</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t_key_variables</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_machines</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">t_key_variables</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">create_properties_for_groups</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">substitution_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">][</span><span class="n">grouping_name</span><span class="p">],</span> <span class="n">t_key_variables</span><span class="p">)</span>
             <span class="c1"># dynamically add properties for relative counts in compart_class instances</span>
-            <span class="n">init_key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">subst_grouping</span><span class="p">]</span><span class="o">.</span><span class="n">l_state_machines</span><span class="p">))</span>
+            <span class="c1"># debuginfo(self[subst_grouping].keys)</span>
+            <span class="n">init_key</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">subst_grouping</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">))</span>    <span class="c1">#l_state_machines))</span>
+            <span class="c1"># debuginfo(init_key, &#39;-&#39;, subst_grouping, &#39;-&#39;, [machine.machine_name for machine in self[subst_grouping].l_state_machines], &#39;-&#39;, t_key_variables)</span>
             <span class="n">add_all_relative_population_getters</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">subst_grouping</span><span class="p">][</span><span class="n">init_key</span><span class="p">],</span> <span class="n">t_key_variables</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">variable_name</span> <span class="ow">in</span> <span class="n">t_key_variables</span><span class="p">:</span>
                 <span class="n">add_all_relative_population_getters</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">subst_grouping</span><span class="p">][</span><span class="n">init_key</span><span class="p">],</span> <span class="p">(</span><span class="n">variable_name</span><span class="p">,))</span></div>
@@ -188,9 +221,41 @@
                             <span class="n">compart_manager</span><span class="o">=</span><span class="p">(</span><span class="n">GroupManager</span><span class="p">,</span> <span class="p">{}),</span>
                             <span class="n">state_machines</span><span class="o">=</span><span class="p">[],</span>
                             <span class="n">compart_class</span><span class="o">=</span><span class="p">(</span><span class="n">AdaptiveView</span><span class="p">,</span> <span class="p">{})):</span>
+        <span class="c1"># debuginfo(&quot;Adding compart process&quot;, process_name, key_variables, state_machines)</span>
         <span class="k">if</span> <span class="n">process_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">add_compart_process</span><span class="p">(</span><span class="n">process_name</span><span class="p">,</span> <span class="n">key_variables</span><span class="p">,</span> <span class="n">compart_manager</span><span class="o">=</span><span class="n">compart_manager</span><span class="p">,</span> <span class="n">state_machines</span><span class="o">=</span><span class="n">state_machines</span><span class="p">,</span> <span class="n">compart_class</span><span class="o">=</span><span class="n">compart_class</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="MultiProcessManager.evolve"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.multi_process_manager.MultiProcessManager.evolve">[docs]</a>    <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">others</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make the ProcessManager evolve, i.e. all the registered processes</span>
+<span class="sd">        in order, starting with the evolution of the sublevels, and</span>
+<span class="sd">        followed by the evolution inherited from superclasses.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">_is_active</span><span class="p">:</span>
+            <span class="c1"># for process in self:</span>
+            <span class="c1">#     process.evolve()</span>
+            <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;MASTER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
+            <span class="c1"># debuginfo(self.l_processes)</span>
+            <span class="k">for</span> <span class="n">process_or_grouping</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_processes</span><span class="p">:</span>
+                <span class="n">process</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">process_or_grouping</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># debuginfo(&quot;Normal evolution&quot;, process_or_grouping, &#39;-&gt;&#39;, process)</span>
+                    <span class="n">process</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># debuginfo(&quot;Grouping evolution&quot;, process_or_grouping, &#39;-&gt;&#39;, process, &#39;SM:&#39;, process.l_state_machines[index].machine_name)</span>
+                    <span class="n">process</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">process</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">no_compart</span><span class="p">:</span>
+                    <span class="c1"># debuginfo(&#39;&gt;&#39;*20)</span>
+                    <span class="c1"># debuginfo(process, process.new_population)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">add_new_population</span><span class="p">(</span><span class="n">process</span><span class="o">.</span><span class="n">new_population</span><span class="p">)</span>
+                    <span class="n">process</span><span class="o">.</span><span class="n">update_counts</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="o">**</span><span class="n">others</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_super_evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">others</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Trick for providing subclass a direct access to upper class&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="o">**</span><span class="n">others</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MultiProcessManager.apply_initial_conditions"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.multi_process_manager.MultiProcessManager.apply_initial_conditions">[docs]</a>    <span class="k">def</span> <span class="nf">apply_initial_conditions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize level with initial conditions specified in the model.</span>
@@ -351,7 +416,10 @@
         <span class="n">new_atom</span><span class="o">.</span><span class="n">add_host</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;MASTER&#39;</span><span class="p">])</span>
         <span class="c1"># maybe to fix strange bugs (step shift for newly introduced populations in metapops ?)</span>
         <span class="n">new_atom</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">step</span>
-        <span class="n">add_all_test_properties</span><span class="p">(</span><span class="n">new_atom</span><span class="p">)</span>
+
+        <span class="c1">## EXPERIMENTAL - replaced by callable class in the model</span>
+        <span class="c1"># add_all_test_properties(new_atom)</span>
+
         <span class="c1"># for name, comp in self._content.items():</span>
         <span class="c1">#     if name not in self.no_compart:</span>
         <span class="c1">#         add_all_relative_population_getters(new_atom, comp.keys)</span>
@@ -523,17 +591,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -550,7 +616,7 @@
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

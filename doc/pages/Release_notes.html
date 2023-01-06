@@ -1,21 +1,19 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
     <title>8. Release notes &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -37,79 +35,77 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="release-notes">
-<h1>8. Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="notes-on-emulsion-1-2">
-<h2>8.1. Notes on EMULSION 1.2<a class="headerlink" href="#notes-on-emulsion-1-2" title="Permalink to this headline">¶</a></h2>
-<p>Release date: TBA</p>
-<div class="section" id="modelling-language">
-<h3>Modelling language<a class="headerlink" href="#modelling-language" title="Permalink to this headline">¶</a></h3>
+  <section id="release-notes">
+<h1><span class="section-number">8. </span>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this heading">¶</a></h1>
+<section id="notes-on-emulsion-1-2">
+<h2><span class="section-number">8.1. </span>Notes on EMULSION 1.2<a class="headerlink" href="#notes-on-emulsion-1-2" title="Permalink to this heading">¶</a></h2>
+<p>Release date: Sept 2022</p>
+<section id="modelling-language">
+<h3>Modelling language<a class="headerlink" href="#modelling-language" title="Permalink to this heading">¶</a></h3>
 <ul>
-<li><p class="first">revised syntax to make compartment-based, hybrid and IBM models more
-homogeneous</p>
+<li><p>revised syntax to make compartment-based, hybrid and IBM models more homogeneous</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last">Transition guide (TODO)</p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="Transition_guide.html#transition-guide"><span class="std std-ref">Transition guide</span></a></p>
 </div>
 </li>
-<li><p class="first">enabled non-exponential distribution of durations in
-compartment-based models (keyword <code class="docutils literal notranslate"><span class="pre">duration</span></code> in state definition)</p>
-</li>
-<li><p class="first">introduced function <code class="docutils literal notranslate"><span class="pre">DIV(a,b)</span></code> which returns 0 if a=0, otherwise a/b</p>
-</li>
+<li><p>enabled non-exponential distribution of durations in compartment-based models (keyword <code class="docutils literal notranslate"><span class="pre">duration</span></code> in state definition)</p></li>
+<li><p>introduced function <code class="docutils literal notranslate"><span class="pre">DIV(a,b)</span></code> which returns 0 if <em>a=0</em>, otherwise <em>a/b</em></p></li>
+<li><p>introduced function <code class="docutils literal notranslate"><span class="pre">ROUND(a)</span></code> to get the integer rounding of <em>a</em></p></li>
+<li><p>aggregate variables now accept a <code class="docutils literal notranslate"><span class="pre">choice</span></code> operator, which results in picking one of the collected values at random</p></li>
+<li></li>
 </ul>
-</div>
-<div class="section" id="simulation-engine">
-<h3>Simulation engine<a class="headerlink" href="#simulation-engine" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="simulation-engine">
+<h3>Simulation engine<a class="headerlink" href="#simulation-engine" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li>revised architecture of compartment-based models and hybrid models
-to build appropriate groupings without duplicates</li>
+<li><p>revised architecture of compartment-based models and hybrid models to build appropriate groupings without duplicates</p></li>
+<li><p>optimised implementation of built-in variables/functions e.g. counts of groupings and state testing</p></li>
 </ul>
-</div>
-<div class="section" id="documentation">
-<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li>introduced example models for new features of the modelling language</li>
+<li><p>introduced example models for new features of the modelling language</p></li>
 </ul>
-</div>
-<div class="section" id="bugfixes">
-<h3>Bugfixes<a class="headerlink" href="#bugfixes" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="bugfixes">
+<h3>Bugfixes<a class="headerlink" href="#bugfixes" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li>revised architecture of compartment-based models to enable correct
-interactions between all state machines</li>
+<li><p>revised architecture of compartment-based models to enable correct interactions between all state machines</p></li>
+<li><p>changed loading of YAML file to ensure that no error occurs due to text encoding. Encoding is now expected to be utf-8; if not (e.g. specific to Windows, or latin-1), non-ASCII characters (e.g. accented letters) are replaced
+by a symbol.</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="notes-on-emulsion-1-1">
-<h2>8.2. Notes on EMULSION 1.1<a class="headerlink" href="#notes-on-emulsion-1-1" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="notes-on-emulsion-1-1">
+<h2><span class="section-number">8.2. </span>Notes on EMULSION 1.1<a class="headerlink" href="#notes-on-emulsion-1-1" title="Permalink to this heading">¶</a></h2>
 <p>Release date: October 19, 2020</p>
-<div class="section" id="id1">
-<h3>Documentation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<section id="id1">
+<h3>Documentation<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li>fixed minor errors in installation instructions or code examples</li>
-<li>introduced example models for new features of the modelling language</li>
-<li>improved the documentation of built-in functions available for model design</li>
+<li><p>fixed minor errors in installation instructions or code examples</p></li>
+<li><p>introduced example models for new features of the modelling language</p></li>
+<li><p>improved the documentation of built-in functions available for model design</p></li>
 </ul>
-</div>
-<div class="section" id="command-line">
-<h3>Command-line<a class="headerlink" href="#command-line" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="command-line">
+<h3>Command-line<a class="headerlink" href="#command-line" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li>added an option <code class="docutils literal notranslate"><span class="pre">--table-params</span></code> which prints a table of
-parameters and initial conditions</li>
-<li>added an option <code class="docutils literal notranslate"><span class="pre">--no-count</span></code> which disables the production of the
+<li><p>added an option <code class="docutils literal notranslate"><span class="pre">--table-params</span></code> which prints a table of
+parameters and initial conditions</p></li>
+<li><p>added an option <code class="docutils literal notranslate"><span class="pre">--no-count</span></code> which disables the production of the
 <code class="docutils literal notranslate"><span class="pre">counts.csv</span></code> file to accelerate simulation (hence, relevant
 outputs must be handled explicitly with actions such as
-<code class="docutils literal notranslate"><span class="pre">log_vars</span></code>)</li>
+<code class="docutils literal notranslate"><span class="pre">log_vars</span></code>)</p></li>
 </ul>
-</div>
-<div class="section" id="id2">
-<h3>Modelling language<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id2">
+<h3>Modelling language<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h3>
 <ul>
-<li><p class="first">introduced wrapper function <code class="docutils literal notranslate"><span class="pre">MIN</span></code> and <code class="docutils literal notranslate"><span class="pre">MAX</span></code> to be used with any number of arguments in models, instead of <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code></p>
-</li>
-<li><p class="first">modified <a class="reference internal" href="Modelling_language_advanced.html#become-action"><span class="std std-ref">built-in action</span></a> <code class="docutils literal notranslate"><span class="pre">become</span></code> to accept a list of prototypes and a keyword <code class="docutils literal notranslate"><span class="pre">proba</span></code> with a list of probabilities (similar to <code class="docutils literal notranslate"><span class="pre">clone</span></code>)</p>
-</li>
-<li><p class="first">added <a class="reference internal" href="Modelling_language_advanced.html#record-change-action"><span class="std std-ref">built-in action</span></a> <code class="docutils literal notranslate"><span class="pre">record_change</span></code> to add the number of agents performing an action to a state variable from the upper level (useful e.g. for counting the cumulative incidence):</p>
+<li><p>introduced wrapper function <code class="docutils literal notranslate"><span class="pre">MIN</span></code> and <code class="docutils literal notranslate"><span class="pre">MAX</span></code> to be used with any number of arguments in models, instead of <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code></p></li>
+<li><p>modified <a class="reference internal" href="Modelling_language_advanced.html#become-action"><span class="std std-ref">built-in action</span></a> <code class="docutils literal notranslate"><span class="pre">become</span></code> to accept a list of prototypes and a keyword <code class="docutils literal notranslate"><span class="pre">proba</span></code> with a list of probabilities (similar to <code class="docutils literal notranslate"><span class="pre">clone</span></code>)</p></li>
+<li><p>added <a class="reference internal" href="Modelling_language_advanced.html#record-change-action"><span class="std std-ref">built-in action</span></a> <code class="docutils literal notranslate"><span class="pre">record_change</span></code> to add the number of agents performing an action to a state variable from the upper level (useful e.g. for counting the cumulative incidence):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">states</span><span class="p">:</span>
   <span class="o">-</span> <span class="n">I</span><span class="p">:</span>
     <span class="o">...</span>
@@ -118,12 +114,12 @@ outputs must be handled explicitly with actions such as
 </pre></div>
 </div>
 </li>
-<li><p class="first">modified keyword <code class="docutils literal notranslate"><span class="pre">random</span></code> in <a class="reference internal" href="Modelling_language_advanced.html#define-prototypes"><span class="std std-ref">prototype definition</span></a> to allow choosing states proportionnally to a list of weights, e.g. to have generic individuals initialized in a SIR model with a given prevalence (assuming all non-infectious individuals are susceptible):</p>
+<li><p>modified keyword <code class="docutils literal notranslate"><span class="pre">random</span></code> in <a class="reference internal" href="Modelling_language_advanced.html#define-prototypes"><span class="std std-ref">prototype definition</span></a> to allow choosing states proportionnally to a list of weights, e.g. to have generic individuals initialized in a SIR model with a given prevalence (assuming all non-infectious individuals are susceptible):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">health_state</span><span class="p">:</span> <span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">prevalence</span><span class="p">,</span> <span class="n">prevalence</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">modified <a class="reference internal" href="Modelling_language_basics.html#initial-conditions"><span class="std std-ref">initial conditions</span></a> for hybrid/IBM models, now accepting a multinomial sampling between several prototypes:</p>
+<li><p>modified <a class="reference internal" href="Modelling_language_basics.html#initial-conditions"><span class="std std-ref">initial conditions</span></a> for hybrid/IBM models, now accepting a multinomial sampling between several prototypes:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">level</span><span class="p">:</span>
   <span class="o">-</span> <span class="n">prototype</span><span class="p">:</span> <span class="p">[</span><span class="nb">list</span> <span class="n">of</span> <span class="n">prototypes</span><span class="p">]</span>
     <span class="n">amount</span><span class="p">:</span> <span class="n">total_nb_of_individuals</span>
@@ -131,64 +127,57 @@ outputs must be handled explicitly with actions such as
 </pre></div>
 </div>
 </li>
-<li><p class="first">added two keywords in <a class="reference internal" href="Modelling_language_advanced.html#next-previous"><span class="std std-ref">state definition</span></a>, and
+<li><p>added two keywords in <a class="reference internal" href="Modelling_language_advanced.html#next-previous"><span class="std std-ref">state definition</span></a>, and
 two in <a class="reference internal" href="Modelling_language_advanced.html#define-prototypes"><span class="std std-ref">prototype definition</span></a>, respectively
 <code class="docutils literal notranslate"><span class="pre">next</span></code> and <code class="docutils literal notranslate"><span class="pre">previous</span></code> for states, <code class="docutils literal notranslate"><span class="pre">next_state</span></code> and
 <code class="docutils literal notranslate"><span class="pre">previous_state</span></code> for prototypes. They allow to define a
 predecessor/successor relationship between nodes (by default, the
 definition order between non-autoremove nodes is used), and to use
-it for changing a statevar related to a state machine</p>
-</li>
-<li><p class="first">added built-in variables <code class="docutils literal notranslate"><span class="pre">duration_of_EVENT</span></code> where <code class="docutils literal notranslate"><span class="pre">EVENT</span></code> is
+it for changing a statevar related to a state machine</p></li>
+<li><p>added built-in variables <code class="docutils literal notranslate"><span class="pre">duration_of_EVENT</span></code> where <code class="docutils literal notranslate"><span class="pre">EVENT</span></code> is
 any event declared in the <a class="reference internal" href="Modelling_language_advanced.html#regulate-time"><span class="std std-ref">calendar section</span></a>.
-The duration is expressed in time units</p>
-</li>
-<li><p class="first">added <a class="reference internal" href="Modelling_language_advanced.html#log-vars-action"><span class="std std-ref">built-in action</span></a> <code class="docutils literal notranslate"><span class="pre">log_vars</span></code> to store information about
+The duration is expressed in time units</p></li>
+<li><p>added <a class="reference internal" href="Modelling_language_advanced.html#log-vars-action"><span class="std std-ref">built-in action</span></a> <code class="docutils literal notranslate"><span class="pre">log_vars</span></code> to store information about
 agents. This action is followed by a list of variables or expressions. Results are
-stored in a file <code class="docutils literal notranslate"><span class="pre">log.txt</span></code> in the output dir</p>
-</li>
-<li><p class="first">added a possibility to declare a <a class="reference internal" href="Modelling_language_advanced.html#default-prototypes"><span class="std std-ref">default prototype</span></a>
+stored in a file <code class="docutils literal notranslate"><span class="pre">log.txt</span></code> in the output dir</p></li>
+<li><p>added a possibility to declare a <a class="reference internal" href="Modelling_language_advanced.html#default-prototypes"><span class="std std-ref">default prototype</span></a>
 in each level. This prototype is applied when creating an agent at this level,
-before the application of any other prototype</p>
-</li>
-<li><p class="first">added a possibility to specify a filename when declaring a
+before the application of any other prototype</p></li>
+<li><p>added a possibility to specify a filename when declaring a
 prototype. This links the prototype name with a
 <a class="reference internal" href="Modelling_language_advanced.html#data-based-prototype-collections"><span class="std std-ref">prototype collection</span></a>
 defined in a CSV file, allowing to define a large number of typical
 individuals or populations with their frequency. See doc for
-complete syntax and additional options (experimental feature)</p>
-</li>
-<li><p class="first">introduced a possibility to <a class="reference internal" href="Modelling_language_advanced.html#order-of-variables-assignment-in-prototypes"><span class="std std-ref">specify the order in which variables are assigned in prototypes</span></a> with keywords <code class="docutils literal notranslate"><span class="pre">begin_with</span></code> and <code class="docutils literal notranslate"><span class="pre">end_with</span></code></p>
-</li>
-<li><p class="first">added a keyword <code class="docutils literal notranslate"><span class="pre">line_style</span></code> in <a class="reference internal" href="Modelling_language_advanced.html#set-states-attributes"><span class="std std-ref">node definition</span></a> to make it possible to draw corresponding populations with other styles than solid lines</p>
-</li>
+complete syntax and additional options (experimental feature)</p></li>
+<li><p>introduced a possibility to <a class="reference internal" href="Modelling_language_advanced.html#order-of-variables-assignment-in-prototypes"><span class="std std-ref">specify the order in which variables are assigned in prototypes</span></a> with keywords <code class="docutils literal notranslate"><span class="pre">begin_with</span></code> and <code class="docutils literal notranslate"><span class="pre">end_with</span></code></p></li>
+<li><p>added a keyword <code class="docutils literal notranslate"><span class="pre">line_style</span></code> in <a class="reference internal" href="Modelling_language_advanced.html#set-states-attributes"><span class="std std-ref">node definition</span></a> to make it possible to draw corresponding populations with other styles than solid lines</p></li>
 </ul>
-</div>
-<div class="section" id="id3">
-<h3>Bugfixes<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="id3">
+<h3>Bugfixes<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li>Fixed YAML unsafe loading</li>
-<li>set explicit encoding to utf8 when writing graphviz/dot file (to overcome problems in Windows version)</li>
-<li>changed default format value for state machine diagrams to svg (works better with windows, otherwise some glyphs are not recognized)</li>
-<li>in python add-ons for metapop, fixed indentation error</li>
-<li>modified calculation of production links to allow empty compartments to “produce” new individuals (e.g. using a constant value)</li>
-<li>modified calculation of production links to allow empty compartments to ‘produce’ new individuals (e.g. using a constant value)</li>
-<li>in SetVar action, allow variables to be assigned directly from another statevar</li>
-<li>fixed calculation error on periodic calendars for intervals with begin &gt; end</li>
-<li>prototype definitions now accept expressions and parameter values</li>
-<li>possibility to use <code class="docutils literal notranslate"><span class="pre">set_var</span></code> with parameter values (not only from other statevars values)</li>
-<li>prototype variables can contain a list of values</li>
-<li>new populations can be added to metapopulations during simulations</li>
+<li><p>Fixed YAML unsafe loading</p></li>
+<li><p>set explicit encoding to utf8 when writing graphviz/dot file (to overcome problems in Windows version)</p></li>
+<li><p>changed default format value for state machine diagrams to svg (works better with windows, otherwise some glyphs are not recognized)</p></li>
+<li><p>in python add-ons for metapop, fixed indentation error</p></li>
+<li><p>modified calculation of production links to allow empty compartments to “produce” new individuals (e.g. using a constant value)</p></li>
+<li><p>modified calculation of production links to allow empty compartments to ‘produce’ new individuals (e.g. using a constant value)</p></li>
+<li><p>in SetVar action, allow variables to be assigned directly from another statevar</p></li>
+<li><p>fixed calculation error on periodic calendars for intervals with begin &gt; end</p></li>
+<li><p>prototype definitions now accept expressions and parameter values</p></li>
+<li><p>possibility to use <code class="docutils literal notranslate"><span class="pre">set_var</span></code> with parameter values (not only from other statevars values)</p></li>
+<li><p>prototype variables can contain a list of values</p></li>
+<li><p>new populations can be added to metapopulations during simulations</p></li>
 </ul>
-</div>
-</div>
-<div class="section" id="notes-on-emulsion-1-0">
-<h2>8.3. Notes on EMULSION 1.0<a class="headerlink" href="#notes-on-emulsion-1-0" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="notes-on-emulsion-1-0">
+<h2><span class="section-number">8.3. </span>Notes on EMULSION 1.0<a class="headerlink" href="#notes-on-emulsion-1-0" title="Permalink to this heading">¶</a></h2>
 <p>Release date: February 20, 2019</p>
 <p>First public release of EMULSION (support Python 3.6+)</p>
 <p>Last stable version: 1.0.12 (August 17, 2020)</p>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -244,23 +233,21 @@ complete syntax and additional options (experimental feature)</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="Feature_examples.html" title="previous chapter">7. Feature examples</a></li>
-      <li>Next: <a href="License.html" title="next chapter">9. License</a></li>
+      <li>Previous: <a href="Feature_examples.html" title="previous chapter"><span class="section-number">7. </span>Feature examples</a></li>
+      <li>Next: <a href="License.html" title="next chapter"><span class="section-number">9. </span>License</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -277,7 +264,7 @@ complete syntax and additional options (experimental feature)</p>
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

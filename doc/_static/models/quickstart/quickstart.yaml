@@ -277,9 +277,9 @@ parameters:
   initial_infected:
     desc: 'initial number of infected animals in the population'
     value: 10
-  adult_age:
-    desc: 'minimal age required to produce offspring (days)'
-    value: '365*2'
+#  adult_age:
+#    desc: 'minimal age required to produce offspring (days)'
+#    value: '365*2'
   init_age_distrib:
     desc: 'distribution of initial ages'
     value: 'randint(0, adult_age)'

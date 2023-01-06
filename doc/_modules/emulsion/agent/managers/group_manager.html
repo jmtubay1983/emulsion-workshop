@@ -1,21 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>emulsion.agent.managers.group_manager &#8212; EMULSION (Epidemiological Multi-Level Simulation framework)</title>
-    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
     <link rel="shortcut icon" href="../../../../_static/STEMAH-favicon.png"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -45,15 +42,15 @@
 
 <span class="c1"># [HEADER]</span>
 
-<span class="kn">from</span>   <span class="nn">collections</span>               <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span>   <span class="nn">collections</span>               <span class="kn">import</span> <span class="n">OrderedDict</span>
 
-<span class="kn">from</span>   <span class="nn">sortedcontainers</span>          <span class="k">import</span> <span class="n">SortedDict</span>
+<span class="kn">from</span>   <span class="nn">sortedcontainers</span>          <span class="kn">import</span> <span class="n">SortedDict</span>
 
-<span class="kn">from</span>   <span class="nn">emulsion.agent.views</span>      <span class="k">import</span> <span class="n">StructuredView</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>       <span class="k">import</span> <span class="n">count_population</span><span class="p">,</span> <span class="n">rewrite_keys</span>
-<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>      <span class="k">import</span> <span class="n">debuginfo</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.views</span>      <span class="kn">import</span> <span class="n">StructuredView</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.misc</span>       <span class="kn">import</span> <span class="n">count_population</span><span class="p">,</span> <span class="n">rewrite_keys</span>
+<span class="kn">from</span>   <span class="nn">emulsion.tools.debug</span>      <span class="kn">import</span> <span class="n">debuginfo</span>
 
-<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.functions</span> <span class="k">import</span> <span class="n">group_and_split_populations</span>
+<span class="kn">from</span>   <span class="nn">emulsion.agent.managers.functions</span> <span class="kn">import</span> <span class="n">group_and_split_populations</span>
 
 <span class="c1">#   _____                       __  __</span>
 <span class="c1">#  / ____|                     |  \/  |</span>
@@ -71,7 +68,7 @@
 <span class="sd">    attribute.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="GroupManager.__init__"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.group_manager.GroupManager.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l_state_machines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">others</span><span class="p">):</span>
+<div class="viewcode-block" id="GroupManager.__init__"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.group_manager.GroupManager.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l_state_machines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">others</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Create a GroupManager based on the specified list of state machines</span>
 <span class="sd">        (*l_state_machines*).</span>
 
@@ -117,21 +114,23 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update_counts</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="GroupManager.do_enter_actions_on_init"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.group_manager.GroupManager.do_enter_actions_on_init">[docs]</a>    <span class="k">def</span> <span class="nf">do_enter_actions_on_init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Force all Compartment agents of this group manager to execute the actions on_enter for each state for their initial population (if any actions on enter). WARNING: this method is intended only for compartment-based models.&quot;&quot;&quot;</span>
-        <span class="n">l_states_with_actions_on_enter</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">state_machine</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_state_machines</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">state_machine</span><span class="o">.</span><span class="n">states</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">state_machine</span><span class="o">.</span><span class="n">state_actions</span> <span class="ow">and</span> <span class="s1">&#39;on_enter&#39;</span> <span class="ow">in</span> <span class="n">state_machine</span><span class="o">.</span><span class="n">state_actions</span><span class="p">[</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
-                    <span class="n">l_states_with_actions_on_enter</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="c1"># def do_enter_actions_on_init(self):</span>
+    <span class="c1">#     &quot;&quot;&quot;Force all Compartment agents of this group manager to execute the actions on_enter for each state for their initial population (if any actions on enter). WARNING: this method is intended only for compartment-based models.&quot;&quot;&quot;</span>
+    <span class="c1">#     l_states_with_actions_on_enter = []</span>
+    <span class="c1">#     for state_machine in self.l_state_machines:</span>
+    <span class="c1">#         for state in state_machine.states:</span>
+    <span class="c1">#             if state.name in state_machine.state_actions and &#39;on_enter&#39; in state_machine.state_actions[state.name]:</span>
+    <span class="c1">#                 l_states_with_actions_on_enter.append(state.name)</span>
 
-        <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">compartment</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">compartment</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">population</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">continue</span>
-            <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">l_states_with_actions_on_enter</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">compartment</span><span class="o">.</span><span class="n">do_state_actions</span><span class="p">(</span><span class="s1">&#39;on_enter&#39;</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">state_machine</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">population</span><span class="o">=</span><span class="n">compartment</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">population</span><span class="p">)</span></div>
+    <span class="c1">#     debuginfo(l_states_with_actions_on_enter)</span>
+    <span class="c1">#     for (key, compartment) in self._content.items():</span>
+    <span class="c1">#         if compartment.statevars.population == 0:</span>
+    <span class="c1">#             continue</span>
+    <span class="c1">#         for state in key:</span>
+    <span class="c1">#             if state.name not in l_states_with_actions_on_enter:</span>
+    <span class="c1">#                 continue</span>
+    <span class="c1">#             debuginfo(self.statevars.step, &quot;ACTIONS ON INIT&quot;)</span>
+    <span class="c1">#             compartment.do_state_actions(&#39;on_enter&#39;, state.state_machine, state.name, population=compartment.statevars.population)</span>
 
 
 <div class="viewcode-block" id="GroupManager.apply_changes"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.group_manager.GroupManager.apply_changes">[docs]</a>    <span class="k">def</span> <span class="nf">apply_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_transitions</span><span class="p">,</span> <span class="n">state_machine</span><span class="p">):</span>
@@ -151,15 +150,27 @@
                 <span class="n">target_group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_or_build</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="p">[</span><span class="n">source</span><span class="p">])</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="p">[</span><span class="n">source</span><span class="p">]</span><span class="o">.</span><span class="n">move_to</span><span class="p">(</span><span class="n">target_group</span><span class="p">,</span> <span class="n">state_machine</span><span class="o">=</span><span class="n">state_machine</span><span class="p">,</span> <span class="o">**</span><span class="n">d_population_or_agents</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GroupManager.evolve"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.group_manager.GroupManager.evolve">[docs]</a>    <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GroupManager.evolve"><a class="viewcode-back" href="../../../../emulsion.agent.managers.html#emulsion.agent.managers.group_manager.GroupManager.evolve">[docs]</a>    <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">machine_index</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Ask each group to make its content evolve, then remove population or</span>
 <span class="sd">        agents from autoremove groups and update counts.</span>
 
+<span class="sd">        Params:</span>
+<span class="sd">        -------</span>
+<span class="sd">        machine_index: index of the state machine to run; if None</span>
+<span class="sd">          (call from CompartProcessManager), all state machines</span>
+<span class="sd">          associated with current group manager are run, in</span>
+<span class="sd">          sequence. To avoid multiple calls, super().evolve() is run</span>
+<span class="sd">          only if machine_index is None or 0</span>
+
+<span class="sd">        This parameter was introduced to run processes in the order specified in the YAML file</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">_is_active</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">machine_index</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">machine_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">new_population</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">machine</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_state_machines</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">statevars</span><span class="o">.</span><span class="n">_is_active</span><span class="p">:</span>
+            <span class="n">l_state_machines</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l_state_machines</span><span class="p">[</span><span class="n">machine_index</span><span class="p">]]</span> <span class="k">if</span> <span class="n">machine_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_state_machines</span>
+            <span class="k">for</span> <span class="n">machine</span> <span class="ow">in</span> <span class="n">l_state_machines</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">evolve_states</span><span class="p">(</span><span class="n">machine</span><span class="o">=</span><span class="n">machine</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_content</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                     <span class="k">if</span> <span class="n">comp</span><span class="o">.</span><span class="n">autoremove</span><span class="p">:</span>
@@ -327,17 +338,15 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>document.getElementById('searchbox').style.display = "block"</script>
 
 
 
@@ -354,7 +363,7 @@
       &copy;2016, INRAE and Univ. Lille.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
