@@ -47,8 +47,9 @@ emulsion --version
 
 Your configuration is correct if you get this:
 
-![emulsion vesion](img/version.png)
-
+```bash
+1.2rc4
+```
 
 - You can also test the notebook
 
