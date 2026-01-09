@@ -1,31 +1,461 @@
 ---
-title: "Hello, Quarto"
-format: html
+title: "🦠 Workshop: From Theory to Simulation"
+subtitle: "A Practical Guide to Mechanistic Disease Modeling with EMULSION"
+author: "Jerrold Tubay"
+date: "10 January 2025"
+format: 
+  revealjs:
+    scrollable: true
 ---
 
-# 🦠 Workshop: From Theory to Simulation 
-## A Practical Guide to Mechanistic Disease Modeling with EMULSION
-
-**Lead:** Jerrold Tubay | **Date:** 10 January 2025  
 **Origin:** Adapted from doctoral training by Sébastien Picault (INRAE)
 
----
 ### 🎯 Learning Objectives
-* **Conceptual Mapping:** Translate biological assumptions into formal state-machine diagrams.
-* **Stochastic Literacy:** Understand the role of random chance in disease dynamics.
-* **Parameter Sensitivity:** Identify which biological variables impact outbreak trajectories.
-* **Simulation-Based Reasoning:** Use model outputs to justify public health interventions.
+- **Conceptual Mapping:** Translate biological assumptions into formal state-machine diagrams.
+- **Stochastic Literacy:** Understand the role of random chance in disease dynamics.
+- **Parameter Sensitivity:** Identify which biological variables impact outbreak trajectories.
+- **Simulation-Based Reasoning:** Use model outputs to justify public health interventions.
 
 ---
 
-In the following exercises, we will start with a simple model and see how EMULSION helps to introduce new features to make it more realistic and represent detection and control measures. 
-In the meanwhile, a few side issues will be also explored to illustrate specific points in modelling.
+In the following exercises, we will start with a simple model and see how **EMULSION** helps to introduce new features to make it more realistic and represent detection and control measures.  
+
+Meanwhile, a few side issues will also be explored to illustrate specific points in modelling.
+
+---
 
 The "evolution" of the models goes through the following diagram:
 
-![img/progression.svg](img/progression.svg)
-
+![Model progression](img/progression.svg)
 
 Solutions are proposed for each exercise in the `solutions` directory.
 
-### Note the transition from Compartmental (Step 1) to Hybrid (Step 6) paradigms—this is the core strength of EMULSION.
+Note the transition from **Compartmental (Step 1)** to **Hybrid (Step 6)** paradigms — this is the core strength of EMULSION.
+
+
+---
+
+### 📦 Module 1: SIR Fundamentals
+
+<div style="padding: 15px; background-color: #e7f3ff; border-left: 5px solid #2196F3;">
+<p>We begin by translating the classic <b>Susceptible-Infectious-Recovered</b> flowchart into a computer model.</p>
+</div>
+
+
+---
+
+## 🟢 Exercise 1: Your First EMULSION Model
+
+In this exercise, we explore **`exercises/step1.yaml`**. This file describes a discrete-time, compartment-based **SIR (Susceptible-Infectious-Recovered)** model.
+
+---
+
+### 1.1 Anatomy of the Model
+
+Open the file exercises/step1.yaml in your editor. EMULSION models are written in **YAML**, a format that relies on strict indentation to organize information. As you browse the code, locate these four core sections:
+
+1. **`state_machines`**: Defines the "flowchart" of the disease—the states (**S**, **I**, and **R**) and the logical paths between them.
+2. **`transitions`**: Rules for moving between states. Look for the `rate` keyword; this is where biological transitions are calculated.
+3. **`parameters`**: Contains constants like `transmission_rate` and `recovery_duration`.
+4. **`initial_conditions`**: Sets initial conditions such as "Patient Zero" (how many individuals start in the **I** state).
+
+
+---
+
+### 1.2 Running the Simulation
+
+Instead of using an external terminal, we will execute the model directly within this notebook using the **Code Cell** immediately following this description.
+
+**Instruction:** The next cell uses the `%%bash` magic command. This tells Jupyter to run the code as a terminal script. It will automatically navigate to the `exercises` directory and launch EMULSION.
+
+**To run the model:** Click on the next cell and press **Shift + Enter**.
+
+```{bash}
+%%bash 
+cd exercises
+emulsion run --plot step1.yaml
+```
+
+---
+
+### 1.3 Analyzing the Results
+
+Once the simulation finishes, look for a link to an **HTML plot** in the cell output: [exercises/img/stoch_compart_SIR.html](exercises/img/stoch_compart_SIR.html). Open it to view the interactive epidemic curves.
+
+**Discussion Points:**
+
+- **The Peak:** At what time step does the number of Infectious individuals reach its maximum?
+- **Persistence:** Does the number of Susceptible individuals ever reach zero? If not, why?
+- **Consistency:** Since this model is stochastic, does the graph look identical every time?
+
+---
+
+Plots corresponding to simulation outcomes are produced in a file named after the `model_name` value specified in the YAML file: [img/stoch_compart_SIR.html](exercises/img/stoch_compart_SIR.html).
+
+When this notebook is running online with Binder, the plot file does not open automatically. You have to open the link above and click **Trust HTML** to view the results.
+
+![HTML Preview](img/html.png)
+
+These plots are built from the simulation outputs which are stored in a CSV file named `counts.csv`, which by default is located in the `outputs/` directory: [outputs/counts.csv](exercises/outputs/counts.csv).
+
+---
+
+**NOTES:**
+- Running `emulsion -h` provides all possible commands and options.
+- In the terminal, the command supports completion (start typing and hit TAB to view proposals).
+
+```{bash}
+%%bash
+emulsion -h
+```
+
+
+---
+
+### 1.3 View model diagrams
+
+Produce a graphical representation of the state machines of the model:
+
+```bash
+%%bash
+emulsion diagrams step1.yaml
+```
+![stoch_compart_SIR_health_state_machine.svg](solutions/img/stoch_compart_SIR_health_state_machine.svg)
+
+
+---
+
+### 1.4 Change simulation conditions
+
+Play with the model through the command-line interface: for instance, to run only one repetition (`-r 1`) but observe the evolution of the system in the long run (500 days: `-t 500`) with different parameter values (`-p` to change parameter value):
+
+```bash
+%%bash
+cd exercises
+emulsion run --plot step1.yaml -r 1 -t 500 -p transmission_I=0.2 -p initial_prevalence=0.1
+```
+
+
+---
+
+## Exercise 2 — Introduce demography and age structure
+
+Open file `exercises/step2.yaml` and incorporate the following changes.
+
+---
+
+### 2.1 Add age groups
+
+We will represent two age groups: **juveniles** (J) and **adults** (A), juveniles becoming adults at rate `maturation=0.05`.  
+We will take example on existing parameters, processes and state machines.
+
+#### Rename the model
+
+- Change model name from `stoch_compart_SIR` to `stoch_compart_SIR_JA`.
+
+#### Add a process at animals level
+
+```yaml
+processes:
+  animals:
+    - health_state
+    - age_group
+```
+
+---
+
+#### Add a state machine `age_group`
+
+```yaml
+state_machines:
+  age_group:
+    desc: '...'
+    states:
+      - J:
+          name: 'Juveniles'
+          desc: '...'
+          fillcolor: 'purple'
+      - A:
+          name: 'Adults'
+          desc: 'a...'
+          fillcolor: 'darkred'
+    transitions:
+      - from: J
+        to: A
+        rate: 'maturation'
+        desc: 'maturation of juvenile individuals into adults'
+```
+
+---
+
+#### Add parameter `maturation`
+
+```yaml
+parameters:
+  maturation: 
+    desc: 'maturation rate, i.e. speed at which juveniles become adults'
+    value: 0.05
+```
+
+<br>
+
+### 2.2 Run the model and observe the results. 
+
+```bash
+%%bash
+cd exercises
+emulsion run --plot step2.yaml --silent
+```
+
+... and check the results: [img/stoch_compart_SIR_JA.html](exercises/img/stoch_compart_SIR_JA.html)
+
+---
+
+**IMPORTANT NOTE:** 
+
+Initial individuals are **distributed randomly** in `J` and `A` states. This is because the prototypes used for defining the initial conditions do not specify the value of `age_group`.
+
+Let's assume that juveniles should be regarded as the default `age_group` state.
+
+- modify the initial prototypes to assign a "default" age group:
+
+```yaml
+      prototypes:
+        animals:
+          - healthy:
+              desc: 'healthy animals'
+              health_state: S
+              age_group: default
+          - infectious:
+              desc: 'infectious animals'
+              health_state: I
+              age_group: default
+```
+
+---
+
+- modify state J in the state machines section to mark it as the default age group state:
+
+```yaml
+      state_machines:
+      ...
+        age_group:
+          states:
+               - J:
+                   name: 'Juveniles'
+                   desc: '...'
+                   fillcolor: 'purple'
+                   default: yes
+          ...
+```
+
+---
+
+### 2.3 Add a density-dependent mortality
+
+Mortality is represented with a new state "Deceased" (`D`) in state machine `age_group`. It produces a "sink" to put individuals leaving the system.
+
+Add state `D` **with property `autoremove: yes`** and transitions from both `J` and `A` to `D` with mortality rate `mu * total_herd / K`. 
+
+- variable `total_herd` represents the total number of animals, automatically defined in EMULSION
+
+- add two new parameters: the base mortality rate ``mu = 0.05`` and the carrying capacity of the environment ``K = 150``
+
+---
+
+### 2.4 Add a birth dynamics
+
+State machines can define a `productions:` section (similar to `transitions:`) to specify from and to which states and at which rate new individuals are produced.
+
+- create a new prototype `newborn` for new individuals, specifying their `age_group` (`J`) but also their `health_state` (`S`, assuming no vertical transmission)
+- add a production link between `A` and `J` (adults produce juveniles) at birth rate *b = mu* $\times\ 2$, specifying `prototype: newborn` for the newly created individuals
+
+---
+
+### 2.5 Test your final model
+
+```bash
+%%bash
+cd exercises 
+emulsion run --plot step2.yaml --silent
+```
+
+... and check the results: [img/stoch_compart_SIR_JA.html](exercises/img/stoch_compart_SIR_JA.html)
+
+---
+
+### 2.6 Check the new diagram
+
+You can visualize the diagram corresponding to the new state machine:
+
+```bash
+%%bash
+cd exercises
+emulsion diagrams step2.yaml
+```
+
+---
+
+![img/stoch_compart_SIR_JA_age_group_machine.svg](solutions/img/stoch_compart_SIR_JA_age_group_machine.svg)
+
+**PLEASE NOTE:**
+
+- the `autoremove` state (`D`) with dotted box
+
+- the `production` link from `A` to `J`, with dashed arrow
+
+**DISCUSSION:**
+
+> How would you add disease-induced mortality? (several possibilities)
+
+---
+
+### 2.7 Parenthesis: Integrate simulation results with R or other statistical sotware
+
+The default plots produced by EMULSION are not meant to be used but for immediate feedback during model prototyping. Otherwise, the simulation results can be processed with your favourite statistics tool such as [R](https://www.r-project.org/). In what follows, we processed the output in Python for convinience.
+
+First, simulate your model with enough stochastic repetitions
+
+```bash
+%%bash
+cd exercises 
+emulsion run --plot step2.yaml --silent -r 50
+```
+
+---
+
+Then you can use a custom R script to transform and visualize new information from raw simulation data:
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Read CSV
+results = pd.read_csv("exercises/outputs/counts.csv")
+
+# Number of runs
+NB_RUNS = results['simu_id'].nunique()
+
+# Prep & compute
+tmp = results[['simu_id', 'step', 'I', 'percentage_prevalence']].copy()
+tmp['persists'] = tmp['I'] > 0
+
+def mean_prevalent(s):
+    mask = tmp.loc[s.index, 'persists']
+    return (s[mask].mean() / 100.0) if mask.sum() > 0 else np.nan
+
+grp = tmp.groupby('step').agg(
+    persistence=('persists', lambda x: x.sum() / NB_RUNS),
+    prevalence=('percentage_prevalence', mean_prevalent)
+).reset_index()
+
+# Plot
+plt.figure(figsize=(9,5))
+plt.plot(grp['step'], grp['persistence'], label='Persistence', lw=2)
+plt.plot(grp['step'], grp['prevalence'], label='Mean prevalence (persistent runs)', lw=2)
+plt.xlabel("Time (days)")
+plt.ylabel(f"Proportion (on {NB_RUNS} repetitions)")
+plt.grid(alpha=0.3)
+plt.legend(loc='lower center')
+plt.tight_layout()
+plt.show()
+```
+
+- Persistence = “Does infection survive?” (across runs)
+
+- Prevalence = “How big is the infection among those surviving runs?”
+
+---
+
+# ⏱️ Exercise 3: Non-Exponential Durations
+
+In most basic models, the time spent in a state (like how long an individual stays a Juvenile) follows an **exponential distribution**. This assumes a "memoryless" process where an individual has the same probability of leaving the state every day, regardless of how long they have already been there.
+
+---
+
+EMULSION allows you to specify **non-exponential durations**. This is essential for modeling specific life stages (like a fixed pregnancy period) or diseases with a strict incubation time. 
+
+> **How it works:** When a state has a `duration` property, individuals are "locked" in that state until the timer is up, unless a transition is specifically marked to allow an early **escape**.
+
+---
+
+### 3.1 Constant Duration for Juveniles
+
+We will now modify [exercises/step3.yaml](exercises/step3.yaml) to make the juvenile stage a fixed length of time ($1/maturation$) instead of a random average.
+
+#### 🛠️ Instructions:
+
+1.  **Rename the Model:** Open [exercises/step3.yaml](exercises/step3.yaml) and rename the model as `stoch_compart_SIR_JA_dur`.
+
+2.  **Define the Duration in State J:** In the `age_group` state machine, add the `duration` property to state **J**. 
+
+```yaml
+    - J:
+        name: 'Juveniles'
+        duration: 'dur_juvenile'
+        fillcolor: 'purple'
+```
+
+---
+
+3.  **Update the Maturation Transition:** Change the transition from **J to A**. Since the duration is now handled by the state "timer," replace `rate: maturation` with `proba: 1`. This tells the engine to move 100% of individuals to the Adult state as soon as the duration ends.
+
+4.  **Enable the Escape Condition:** We don't want juveniles to be "immortal" while they wait to grow up! Mark the transition from `**J to D**` (mortality) with `escape: yes`. 
+
+5.  **Add the Parameter:** In the `parameters` section, define `dur_juvenile` with the value `1/maturation`.
+
+---
+
+### 💡 Why use `escape: yes`?
+Without this property, the `duration` acts like a protective shield. Individuals would be forced to stay in state **J** for the full duration, making them accidentally immune to death until they become adults. The "escape" allows the mortality transition to override the maturation timer.
+
+---
+
+### 🚀 Run the Simulation
+Execute the cell below to run the updated model.
+
+```bash
+%%bash
+cd exercises
+emulsion run --plot step3.yaml --silent
+```
+
+---
+
+#### 📊 Compare the Outcomes
+Now that you've verified the logic, look at how this changes the epidemic's progression:
+
+* **Interactive Plot:** [exercises/img/stoch_compart_SIR_JA_dur.html](exercises/img/stoch_compart_SIR_JA_dur.html)
+
+**Discussion Point:** Does the maturation of juveniles still look like a smooth, gradual curve? Or do you see a sudden shift where groups become adults all at once? This effect is the direct result of using fixed durations.
+
+---
+
+### 🖼️ Interpreting the New Model Symbols
+
+When you add advanced logic like **fixed durations** and **escapes**, EMULSION automatically updates the state-machine diagrams. These visual cues are the best way to verify that your YAML code matches your biological intent.
+
+#### 1. Generate the Diagrams
+Run the following code cell to update the graphical representations for `step3.yaml`:
+
+```bash
+%%bash
+cd exercises
+emulsion diagrams step3.yaml
+```
+
+---
+
+Look at the diagram here: [img/stoch_compart_SIR_JA_dur_age_group_machine.svg](img/stoch_compart_SIR_JA_dur_age_group_machine.svg)
+
+![](solutions/img/stoch_compart_SIR_JA_dur_age_group_machine.svg)
+
+In model diagram, note:
+
+1. the nice **clock** attached to states with a specific duration property
+
+2. the **triangle** at the beginning of transitions endowed with an escape condition.
+
+---
+
