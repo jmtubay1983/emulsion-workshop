@@ -41,7 +41,6 @@ Note the transition from **Compartmental (Step 1)** to **Hybrid (Step 6)** parad
 <p>We begin by translating the classic <b>Susceptible-Infectious-Recovered</b> flowchart into a computer model.</p>
 </div>
 
-
 ---
 
 ## 🟢 Exercise 1: Your First EMULSION Model
@@ -456,6 +455,97 @@ In model diagram, note:
 1. the nice **clock** attached to states with a specific duration property
 
 2. the **triangle** at the beginning of transitions endowed with an escape condition.
+
+---
+
+# 🦠 3.2 Adding Latency: Transitioning to an SEIR Model
+
+In many diseases, individuals do not become contagious immediately after being infected. There is a "waiting period" known as the **latent** (or exposed) period. To reflect this biological reality, we will move from a simple **SIR** model to an **SEIR** model by inserting an **Exposed (E)** state.
+
+---
+
+Unlike the juvenile stage where we used a constant duration, we will model latency using a **Gamma distribution**. This creates a realistic "narrow" window where most individuals transition around day 6, rather than at a purely random (exponential) rate.
+
+---
+
+### 🛠️ Implementation Checklist
+
+Open [exercises/step3.yaml](exercises/step3.yaml) and apply the following modifications:
+
+1.  **Rename the Model:** Change the `model_name` to `stoch_compart_SEIR_JA_dur`.
+
+2.  **Add State E:** In the `health_state` machine, insert state **E** between **S** and **I**. Give it a `duration` property.
+
+```yaml
+    states:
+      - E:
+          name: 'Exposed'
+          desc: 'Infected but not yet infectious'
+          duration: 'dur_latency'
+          fillcolor: 'orange'
+```
+
+---
+
+3.  **Adjust Transitions:** * Change the **S → I** transition to **S → E** (this is still driven by the transmission rate).
+    * Create a new transition from **E → I** with `proba: 1` (this triggers automatically when the duration in **E** expires).
+
+4.  **Define Parameters:** * Add `avg_dur_latency = 6`.
+    * Define `dur_latency` using: `random_gamma(50, avg_dur_latency/50)`. 
+
+    > **Note:** We use a shape parameter of $k=50$ to ensure the distribution is very narrow around the mean.
+
+---
+
+5.  **Update Initial Conditions:**
+    * Create a prototype named `infected` (or modify `infectious`) so that initial cases start in state **E**.
+
+6.  **Update Monitoring:**
+    * Modify the `percentage_prevalence` formula to include the latent individuals:
+      `percentage_prevalence`.
+
+---
+
+### 🚀 Run the Simulation
+
+Execute the cell below to run the model. In the resulting plot, look for the characteristic **horizontal shift** (time delay) between the orange curve (Exposed) and the red curve (Infectious).
+
+```yaml
+%%bash
+cd exercises
+emulsion run --plot step3.yaml --silent
+```
+
+---
+
+## 🖼️ Interpreting the SEIR Results and Diagrams
+
+After running the simulation, it is important to verify that the mathematical logic in your YAML file translates correctly into the model's behavior and structure.
+
+### 📊 1. Analyze the Epidemic Curves
+View the interactive results here:  
+👉 **[Simulation Results: stoch_compart_SEIR_JA_dur.html](exercises/img/stoch_compart_SEIR_JA_dur.html)**
+
+---
+
+### 🔍 2. Visual Audit of the Model Logic
+Generate the state machine diagrams to see how EMULSION represents these new properties visually:
+
+```bash
+%%bash
+cd exercises
+emulsion diagrams step3.yaml
+```
+
+![img/stoch_compart_SEIR_JA_dur_health_state_machine.svg](solutions/img/stoch_compart_SEIR_JA_dur_health_state_machine.svg)
+
+---
+
+### 📦 Module 2: Biological Complexity
+
+<div style="padding: 15px; background-color: #e7f3ff; border-left: 5px solid #2196F3;">
+<p>Real populations aren't static. We will now add <b>births, deaths, and age-dependent contact risks</p>
+</div>
 
 ---
 
