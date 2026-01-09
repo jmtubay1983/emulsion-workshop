@@ -1,0 +1,31 @@
+---
+title: "Hello, Quarto"
+format: html
+---
+
+# 🦠 Workshop: From Theory to Simulation 
+## A Practical Guide to Mechanistic Disease Modeling with EMULSION
+
+**Lead:** Jerrold Tubay | **Date:** 10 January 2025  
+**Origin:** Adapted from doctoral training by Sébastien Picault (INRAE)
+
+---
+### 🎯 Learning Objectives
+* **Conceptual Mapping:** Translate biological assumptions into formal state-machine diagrams.
+* **Stochastic Literacy:** Understand the role of random chance in disease dynamics.
+* **Parameter Sensitivity:** Identify which biological variables impact outbreak trajectories.
+* **Simulation-Based Reasoning:** Use model outputs to justify public health interventions.
+
+---
+
+In the following exercises, we will start with a simple model and see how EMULSION helps to introduce new features to make it more realistic and represent detection and control measures. 
+In the meanwhile, a few side issues will be also explored to illustrate specific points in modelling.
+
+The "evolution" of the models goes through the following diagram:
+
+![img/progression.svg](img/progression.svg)
+
+
+Solutions are proposed for each exercise in the `solutions` directory.
+
+### Note the transition from Compartmental (Step 1) to Hybrid (Step 6) paradigms—this is the core strength of EMULSION.
